@@ -3,14 +3,14 @@
   line-height: 1.5;
   font-weight: 400;
   min-height: 100vh;
-  background: rgb(119,109,188);
-  background: linear-gradient(180deg, rgba(119,109,188,1) 50%, rgba(135,165,212,1) 100%);
-  font-family: 'Roboto', sans-serif;
 }
 
 body {
   padding: 0;
   margin: 0;
+  background: rgb(119,109,188) !important;
+  background: linear-gradient(180deg, rgba(119,109,188,1) 50%, rgba(135,165,212,1) 100%) !important;
+  font-family: 'Roboto', sans-serif;
 }
 
 label {
