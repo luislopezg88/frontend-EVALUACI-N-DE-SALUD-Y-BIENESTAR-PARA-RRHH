@@ -4,6 +4,7 @@ import { useAuth } from "../auth/AuthProvider";
 import { Navigate } from "react-router-dom";
 import { AuthResponse, AuthResponseError } from "../types/types";
 import { API_URL } from "../auth/authConstants";
+import '../assets/css/auth.css';
 
 export default function Login() {
   const [username, setUsername] = useState("");

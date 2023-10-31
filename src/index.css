@@ -2,6 +2,10 @@
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  min-height: 100vh;
+  background: rgb(119,109,188);
+  background: linear-gradient(180deg, rgba(119,109,188,1) 50%, rgba(135,165,212,1) 100%);
+  font-family: 'Roboto', sans-serif;
 }
 
 body {
@@ -11,11 +15,6 @@ body {
 
 label {
   display: block;
-}
-
-.form {
-  width: 400px;
-  margin: 0 auto;
 }
 
 input[type="text"],

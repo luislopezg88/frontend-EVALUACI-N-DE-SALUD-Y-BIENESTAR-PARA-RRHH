@@ -1,0 +1,27 @@
+.form{
+    background: #fff;
+    border-radius: 8px;
+    width: 500px;
+    padding: 20px;
+    margin: 5% auto 0 auto;
+}
+
+@media (max-width: 768px) {
+    .form{
+        width: 90%;
+    }    
+}
+
+
+.form h1{
+    color: #9e8dcb;
+}
+
+.form input{
+    border: solid 1px #c0c0c0;
+    color: #c0c0c0;
+}
+
+.form input::placeholder{
+    color: #c0c0c0;
+}
