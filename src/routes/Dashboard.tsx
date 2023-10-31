@@ -14,7 +14,7 @@ export default function Dashboard() {
   const auth = useAuth();
 
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [value, setValue] = useState("");
+  //const [value, setValue] = useState("");
 
   async function getTodos() {
     const accessToken = auth.getAccessToken();
@@ -37,7 +37,7 @@ export default function Dashboard() {
     }
   }
 
-  async function createTodo() {
+  /*async function createTodo() {
     if (value.length > 3) {
       try {
         const response = await fetch(`${API_URL}/posts`, {
@@ -56,16 +56,16 @@ export default function Dashboard() {
         console.error(error);
       }
     }
-  }
+  }*/
 
   useEffect(() => {
     getTodos();
   }, []);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  /*function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     createTodo();
-  }
+  }*/
 
   return (
     <PortalLayout>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import PortalLayout from '../layout/PortalLayout';
 
 // Define la información de los recursos
