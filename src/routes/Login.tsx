@@ -3,6 +3,7 @@ import DefaultLayout from "../layout/DefaultLayout";
 import { useAuth } from "../auth/AuthProvider";
 import { Navigate } from "react-router-dom";
 import { AuthResponse, AuthResponseError } from "../types/types";
+import { API_URL } from "../auth/authConstants";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -24,8 +25,9 @@ export default function Login() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     // auth.setIsAuthenticated(true);
+    console.log(API_URL);
     try {
-      const response = await fetch("http://localhost:3100/api/login", {
+      const response = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),

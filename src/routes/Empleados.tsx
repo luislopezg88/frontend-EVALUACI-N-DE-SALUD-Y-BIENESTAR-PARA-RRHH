@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PortalLayout from "../layout/PortalLayout";
 import { Link } from "react-router-dom";
+import { API_URL } from "../auth/authConstants";
 
 export default function ListaEmpleados() {
   const [empleados, setEmpleados] = useState([]);
@@ -9,7 +10,7 @@ export default function ListaEmpleados() {
   useEffect(() => {
     async function fetchEmpleados() {
       try {
-        const response = await fetch("http://localhost:3100/api/listadoEmpleado");
+        const response = await fetch(`${API_URL}/listadoEmpleado`);
         if (response.ok) {
           const data = await response.json();
           setEmpleados(data.body.empleado); // Accede a "data.body.empleado"

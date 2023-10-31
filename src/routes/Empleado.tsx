@@ -2,6 +2,7 @@ import { useState } from "react";
 import PortalLayout from "../layout/PortalLayout";
 import { useNavigate } from "react-router-dom";
 import { AuthResponseError } from "../types/types";
+import { API_URL } from "../auth/authConstants";
 
 export default function Empleado() {
   const [name, setName] = useState("");
@@ -18,7 +19,7 @@ export default function Empleado() {
     console.log(name, lastname, edad);
 
     try {
-      const response = await fetch("http://localhost:3100/api/registroEmpleado", {
+      const response = await fetch(`${API_URL}/registroEmpleado`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, lastname, edad, sexo, puesto }),
