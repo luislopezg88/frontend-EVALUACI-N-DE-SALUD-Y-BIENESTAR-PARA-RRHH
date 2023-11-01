@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import PortalLayout from "../layout/PortalLayout";
-import { Link } from "react-router-dom";
 import { API_URL } from "../auth/authConstants";
 import Card from 'react-bootstrap/Card';
 
