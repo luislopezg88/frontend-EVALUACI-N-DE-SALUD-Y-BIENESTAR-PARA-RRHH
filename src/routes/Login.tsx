@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../auth/AuthProvider";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { AuthResponse, AuthResponseError } from "../types/types";
 import { API_URL } from "../auth/authConstants";
 import '../assets/css/auth.css';
@@ -112,7 +112,7 @@ export default function Login() {
               </form>
             </Card.Body>
             <Card.Footer className="text-center">
-              <p>¿No tienes una cuenta? <a href="signup">Sign Up</a></p>
+              <p>¿No tienes una cuenta? <Link to="signup">Sign Up</Link></p>
             </Card.Footer>
           </Card>
         </div>
