@@ -85,7 +85,9 @@ export default function Seguimiento() {
       <div className="container mt-5">
         <div className="row justify-content-center">
           <form onSubmit={handleSubmit} className="form">
-            <h1>Seguimiento de horas trabajadas</h1>
+            <h2 className="text-center text-primary ">
+              Seguimiento de horas trabajadas
+            </h2>
 
             <div className="mb-3">
               <label htmlFor="fecha" className="form-label">
