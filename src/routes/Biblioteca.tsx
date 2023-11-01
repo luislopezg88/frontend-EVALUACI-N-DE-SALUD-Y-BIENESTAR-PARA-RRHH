@@ -99,7 +99,7 @@ export default function Biblioteca() {
               </h2>
             </div>
 
-            <div className="col-12 col-sm-12  mt-4">
+            <div className="col-12 col-sm-12  mt-5 mb-5">
               <div className="accordion">
                 <div className="accordion">
                   {recursos.map((recurso, index) => (
