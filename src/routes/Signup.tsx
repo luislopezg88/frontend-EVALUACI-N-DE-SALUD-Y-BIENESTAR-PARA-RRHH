@@ -51,7 +51,6 @@ export default function Signup() {
   }
 
   return (
-    <DefaultLayout>
     <div className="container mt-5">
       <div className="row justify-content-center">
         <div className="col-md-6">
@@ -138,6 +137,5 @@ export default function Signup() {
         </div>
       </div>
     </div>
-    </DefaultLayout>
   );
 }

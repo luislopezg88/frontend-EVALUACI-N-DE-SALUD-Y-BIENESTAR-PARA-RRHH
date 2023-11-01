@@ -26,34 +26,47 @@ export default function ListaEmpleados() {
   }, []);
 
   return (
-    <PortalLayout>
-      <div className="container mt-5">
+    <div className="container mt-5">
       <div className="row justify-content-center">
-        <div className="col-md-6">
+        <div className="col-12">
           <div className="card">
             <div className="card-header">
-              <h2 className="text-center text-primary">Listado de Empleados</h2>
+              <h2 className="text-center text-primary">Listado de empleados</h2>
             </div>
             <div className="card-body">
-              <div className="text-right">
-                <a href="/me" className="btn btn-primary btn-xs">Crear</a>
-              </div>
+            <div className="d-flex justify-content-end mb-3">
+              <a href="/me" className="btn btn-primary btn-sm px-2">Crear</a>
+            </div>
             {error ? (
-              <div>{error}</div>
+              <div className="alert alert-danger">{error}</div>
             ) : (
-              <ul>
-                {empleados.map((empleado: { name: string, lastname: string, edad: string }, index) => (
-                  <li key={index}>
-                      {empleado.name} {empleado.lastname}, Edad: {empleado.edad}
-                  </li>
+              <table className="table table-striped mb-5">
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Edad</th>
+                    <th>Sexo</th>
+                    <th>Puesto</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {empleados.map((empleado: { name: string, lastname: string, edad: string, sexo: string, puesto: string }, index) => (
+                    <tr key={index}>
+                      <td>{empleado.name}</td>
+                      <td>{empleado.lastname}</td>
+                      <td>{empleado.edad}</td>
+                      <td>{empleado.sexo}</td>
+                      <td>{empleado.puesto}</td>
+                    </tr>
                   ))}
-              </ul>
+                </tbody>
+              </table>
             )}
             </div>
           </div>
         </div>
       </div>
     </div>
-    </PortalLayout>
   );
 }
