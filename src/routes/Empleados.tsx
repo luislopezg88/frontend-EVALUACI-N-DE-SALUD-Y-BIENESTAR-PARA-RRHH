@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import PortalLayout from "../layout/PortalLayout";
 import { API_URL } from "../auth/authConstants";
 import Card from 'react-bootstrap/Card';
+import { Link } from "react-router-dom";
 
 export default function ListaEmpleados() {
   const [empleados, setEmpleados] = useState([]);
@@ -36,7 +37,9 @@ export default function ListaEmpleados() {
               </Card.Header>
               <Card.Body>
               <div className="d-flex justify-content-end mb-3">
-                <a href="/me" className="btn btn-primary btn-sm px-2">Crear</a>
+                <Link to={'/me'}>
+                  <a href="/me" className="btn btn-primary btn-sm px-2">Crear</a>
+                </Link>
               </div>
               {error ? (
                 <div className="alert alert-danger">{error}</div>

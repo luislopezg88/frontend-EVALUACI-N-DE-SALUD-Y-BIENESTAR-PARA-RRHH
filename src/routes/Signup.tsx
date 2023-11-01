@@ -1,7 +1,7 @@
 import { useState } from "react";
 import DefaultLayout from "../layout/DefaultLayout";
 import { useAuth } from "../auth/AuthProvider";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, Link } from "react-router-dom";
 import { AuthResponse, AuthResponseError } from "../types/types";
 import { API_URL } from "../auth/authConstants";
 import Card from 'react-bootstrap/Card';
@@ -133,7 +133,7 @@ export default function Signup() {
               </form>
             </Card.Body>
             <Card.Footer className="text-center">
-              <p>¿No tienes una cuenta? <a href="/">Log in</a></p>
+              <p>¿No tienes una cuenta? <Link to="/">Log in</Link></p>
             </Card.Footer>
           </Card>
         </div>
