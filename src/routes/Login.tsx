@@ -5,6 +5,7 @@ import { Navigate } from "react-router-dom";
 import { AuthResponse, AuthResponseError } from "../types/types";
 import { API_URL } from "../auth/authConstants";
 import '../assets/css/auth.css';
+import Card from 'react-bootstrap/Card';
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -61,8 +62,8 @@ export default function Login() {
   return (
     <div className="container-fluid d-flex align-items-center justify-content-center vh-100">
         <div className="col-12 col-md-6 col-lg-4">
-          <div className="card">
-            <div className="card-header">
+          <Card>
+            <Card.Header>
               <ul className="nav nav-tabs card-header-tabs">
                 <li className="nav-item">
                   <button
@@ -81,8 +82,8 @@ export default function Login() {
                   </button>
                 </li>
               </ul>
-            </div>
-            <div className="card-body">
+            </Card.Header>
+            <Card.Body>
               <h2 className="card-title text-center text-primary mb-4">Log in</h2>
               {!!errorResponse && <div className="alert alert-danger">{errorResponse}</div>}
               <form onSubmit={handleSubmit}>
@@ -110,11 +111,11 @@ export default function Login() {
                   <button type="submit" className="btn btn-primary btn-block">LOG IN</button>
                 </div>
               </form>
-            </div>
-            <div className="card-footer text-center">
+            </Card.Body>
+            <Card.Footer className="text-center">
               <p>¿No tienes una cuenta? <a href="signup">Sign Up</a></p>
-            </div>
-          </div>
+            </Card.Footer>
+          </Card>
         </div>
     </div>
   );

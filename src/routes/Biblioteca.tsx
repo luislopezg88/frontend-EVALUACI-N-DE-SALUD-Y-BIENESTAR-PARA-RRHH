@@ -92,7 +92,7 @@ export default function Biblioteca() {
     <PortalLayout>
       <div className="container">
         <div className="row">
-          <div className="card  mt-2 m-b2">
+          <div className="card mt-2 mb-5">
             <div className="card-header">
               <h2 className="text-center text-primary ">
                 Biblioteca de Recursos
@@ -105,12 +105,12 @@ export default function Biblioteca() {
                   {recursos.map((recurso, index) => (
                     <div className="mb-2 p-2">
                       <div key={index} className="resource">
-                        <h4
+                        <h5
                           className="titulo-acordeon"
                           onClick={() => toggleResource(index)}
                         >
                           {recurso.titulo}
-                        </h4>
+                        </h5>
                         {resourceOpen === index && (
                           <div>
                             <p>{recurso.descripcion}</p>

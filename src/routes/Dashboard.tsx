@@ -21,6 +21,7 @@ import {
   Legend,
   Filler
 } from 'chart.js';
+import CardHeader from "react-bootstrap/esm/CardHeader";
 
 interface Todo {
   id: string;
@@ -147,11 +148,12 @@ export default function Dashboard() {
         <Container>
 
           <Card style={{ width: '100%' }}>
-            <Card.Body>
-              <h1 className="text-center text-primary">
+            <Card.Header>
+              <h2 className="text-center text-primary">
                 Dashboard de {auth.getUser()?.name ?? ""}
-              </h1>
-              
+              </h2>
+            </Card.Header>
+            <Card.Body>
               <Row>
                 <Col xs={12} md={6}>
                   <div className="p-4">
