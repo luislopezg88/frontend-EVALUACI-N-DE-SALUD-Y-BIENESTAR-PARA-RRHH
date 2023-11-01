@@ -8,6 +8,7 @@ import Card from 'react-bootstrap/Card';
 
 export default function Signup() {
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [edad, setEdad] = useState("");
@@ -25,13 +26,14 @@ export default function Signup() {
       const response = await fetch(`${API_URL}/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, name, password, edad, sexo, puestoTrabajo }),
+        body: JSON.stringify({ email, username, name, password, edad, sexo, puestoTrabajo }),
       });
       if (response.ok) {
         const json = (await response.json()) as AuthResponse;
         console.log(json);
         setEmail("");
         setName("");
+        setUsername("");
         setPassword("");
         setEdad("");
         setSexo("");
@@ -69,7 +71,10 @@ export default function Signup() {
                     name="email"
                     className="form-control"
                     placeholder="Email"
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      setUsername(e.target.value);
+                    }}
                     value={email}
                   />
                 </div>
