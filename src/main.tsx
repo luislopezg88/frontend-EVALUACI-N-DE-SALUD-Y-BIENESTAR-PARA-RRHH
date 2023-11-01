@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./routes/Login.tsx";
@@ -23,6 +23,10 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <Signup />,
+  },
+  {
+    path: "/biblioteca",
+    element: <Biblioteca />,
   },
   {
     path: "/",
