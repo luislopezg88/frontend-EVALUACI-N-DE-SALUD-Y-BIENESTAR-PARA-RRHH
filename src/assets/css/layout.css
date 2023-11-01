@@ -1,0 +1,51 @@
+.botom-menu {
+    background-color: #FFF;
+    overflow: hidden;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
+}
+
+.botom-menu nav{
+    height: 100%;
+}
+
+.botom-menu nav ul{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.botom-menu nav ul li{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 40px;
+}
+
+
+.botom-menu nav ul li a:hover{
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .botom-menu nav ul{
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+    } 
+    
+    .botom-menu nav ul li{
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+    }
+}

@@ -4,6 +4,7 @@ import { useAuth } from "../auth/AuthProvider";
 import { Navigate, useNavigate } from "react-router-dom";
 import { AuthResponse, AuthResponseError } from "../types/types";
 import { API_URL } from "../auth/authConstants";
+import Card from 'react-bootstrap/Card';
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -55,11 +56,11 @@ export default function Signup() {
     <div className="container mt-5">
       <div className="row justify-content-center">
         <div className="col-md-6">
-          <div className="card">
-            <div className="card-header">
+          <Card>
+            <Card.Header>
               <h2 className="text-center text-primary">Sign in</h2>
-            </div>
-            <div className="card-body">
+            </Card.Header>
+            <Card.Body>
               <form onSubmit={handleSubmit} >
                 {!!errorResponse && <div className="alert alert-danger">{errorResponse}</div>}
                 <div className="form-group">
@@ -130,11 +131,11 @@ export default function Signup() {
                   <button type="submit" className="btn btn-primary btn-block">Sign Up</button>
                 </div>
               </form>
-            </div>
-            <div className="card-footer text-center">
+            </Card.Body>
+            <Card.Footer className="text-center">
               <p>¿No tienes una cuenta? <a href="/">Log in</a></p>
-            </div>
-          </div>
+            </Card.Footer>
+          </Card>
         </div>
       </div>
     </div>

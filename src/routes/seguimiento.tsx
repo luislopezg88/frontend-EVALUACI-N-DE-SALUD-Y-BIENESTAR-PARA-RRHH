@@ -11,14 +11,25 @@ interface Todo {
   extra: string;
 }
 
+/*const tmp = [
+  {
+    _id: "5",
+    fecha: "20/19/2019",
+    inicia: "10:00:00",
+    finaliza: "10:00:00",
+    extra: "10:00:00",
+  },
+];*/
 export default function Seguimiento() {
   const auth = useAuth();
 
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [error, setError] = useState(false);
   const [fecha, setFecha] = useState("");
   const [inicia, setInicia] = useState("");
   const [finaliza, setFinaliza] = useState("");
   const [extra, setExtra] = useState("");
+
   async function getTodos() {
     const accessToken = auth.getAccessToken();
     try {
@@ -35,7 +46,7 @@ export default function Seguimiento() {
         setTodos(json);
       }
     } catch (error) {
-      console.log(error);
+      setError(false);
     }
   }
 
@@ -71,53 +82,101 @@ export default function Seguimiento() {
 
   return (
     <PortalLayout>
-      <form onSubmit={handleSubmit} className="form">
-        <h1>Seguimiento de horas trabajadas</h1>
-        <label>Fecha</label>
-        <input
-          type="date"
-          placeholder="Fecha..."
-          value={fecha}
-          onChange={(e) => setFecha(e.target.value)}
-          className="espacio"
-        />
+      <div className="container mt-5">
+        <div className="row justify-content-center">
+          <form onSubmit={handleSubmit} className="form">
+            <h1>Seguimiento de horas trabajadas</h1>
 
-        <label>Hora entrada</label>
-        <input
-          type="time"
-          placeholder="Hora..."
-          value={inicia}
-          onChange={(e) => setInicia(e.target.value)}
-          className="espacio"
-        />
-        <label>Hora salida</label>
-        <input
-          type="time"
-          placeholder="Hora..."
-          value={finaliza}
-          onChange={(e) => setFinaliza(e.target.value)}
-          className="espacio"
-        />
-        <label>Horas extras</label>
-        <input
-          type="time"
-          placeholder="Hora..."
-          value={extra}
-          onChange={(e) => setExtra(e.target.value)}
-          className="espacio"
-        />
-        <button>Registrar seguimiento</button>
-      </form>
-      <div className="accordion">
-        {todos.map((post: Todo) => (
-          <div key={post._id}>
-            <h3>Fecha:{post?.fecha}</h3>
-            <p>
-              incia:{post.inicia} / Finaliza:{post.finaliza} / horas extras:
-              {post?.extra ?? ""}
-            </p>
+            <div className="mb-3">
+              <label htmlFor="fecha" className="form-label">
+                Fecha
+              </label>
+              <input
+                type="date"
+                className="form-control"
+                id="fecha"
+                value={fecha}
+                onChange={(e) => setFecha(e.target.value)}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="inicia" className="form-label">
+                Hora entrada
+              </label>
+              <input
+                type="time"
+                className="form-control"
+                id="inicia"
+                value={inicia}
+                onChange={(e) => setInicia(e.target.value)}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="inicia" className="form-label">
+                Hora salida
+              </label>
+              <input
+                type="time"
+                className="form-control"
+                id="inicia"
+                value={finaliza}
+                onChange={(e) => setFinaliza(e.target.value)}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="inicia" className="form-label">
+                Horas extras
+              </label>
+              <input
+                type="number"
+                className="form-control"
+                id="inicia"
+                value={extra}
+                onChange={(e) => setExtra(e.target.value)}
+              />
+            </div>
+
+            <button>Registrar seguimiento</button>
+          </form>
+        </div>
+        <div className="row mt-5">
+          <div className="col-12">
+            {error ? (
+              <div className="alert alert-danger">
+                Error al carga tu solicitud
+              </div>
+            ) : todos.length === 0 ? null : (
+              <div className="table-responsive">
+                <table className="table table-striped mb-5">
+                  <thead>
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Hora entrada</th>
+                      <th>Hora salida</th>
+                      <th>Hora extra</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {todos.length === 0 ? (
+                      <tr>
+                        <td colSpan={4}>Sin registros</td>
+                      </tr>
+                    ) : (
+                      todos.map((item: any, index: number) => (
+                        <tr key={index}>
+                          <td>{item?.fecha ?? ""}</td>
+                          <td>{item?.inicia ?? ""}</td>
+                          <td>{item?.finaliza ?? ""}</td>
+                          <td>{item?.extra ?? ""}</td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
-        ))}
+        </div>
       </div>
     </PortalLayout>
   );

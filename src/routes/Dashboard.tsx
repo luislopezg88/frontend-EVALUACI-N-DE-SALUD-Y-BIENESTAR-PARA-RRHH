@@ -2,13 +2,87 @@ import { useEffect, useState } from "react";
 import PortalLayout from "../layout/PortalLayout";
 import { useAuth } from "../auth/AuthProvider";
 import { API_URL } from "../auth/authConstants";
-import grafica from "../assets/grafica.png";
+import { faker } from '@faker-js/faker';
+import '../assets/css/dashboard-page.css';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Card from 'react-bootstrap/Card';
+import { Bar, Line } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+} from 'chart.js';
 
 interface Todo {
   id: string;
   title: string;
   completed: boolean;
 }
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Filler,
+  Legend
+);
+
+export const options = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'top' as const,
+    },
+    title: {
+      display: true,
+      text: 'Chart.js Bar Chart',
+    },
+  },
+};
+
+const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+
+export const data = {
+  labels,
+  datasets: [
+    {
+      label: 'Dataset 1',
+      data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+      backgroundColor: 'rgba(255, 99, 132, 0.5)',
+    },
+    {
+      label: 'Dataset 2',
+      data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+      backgroundColor: 'rgba(53, 162, 235, 0.5)',
+    },
+  ],
+};
+
+export const dataArea = {
+  labels,
+  datasets: [
+    {
+      fill: true,
+      label: 'Dataset 2',
+      data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+      borderColor: 'rgb(53, 162, 235)',
+      backgroundColor: 'rgba(53, 162, 235, 0.5)',
+    },
+  ],
+};
 
 export default function Dashboard() {
   const auth = useAuth();
@@ -70,23 +144,68 @@ export default function Dashboard() {
   return (
     <PortalLayout>
       <div className="dashboard">
-        <h1>Dashboard de {auth.getUser()?.name ?? ""}</h1>
-        {/*<form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="New task to do..."
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-          />
-  </form>*/}
-        {todos.map((post: Todo) => (
-          <div key={post.id}>
-            <h3>{post.title}</h3>
-            <p>{post.completed}</p>
-          </div>
-        ))}
-        <img src={grafica} />
-      </div>
+        <Container>
+
+          <Card style={{ width: '100%' }}>
+            <Card.Header>
+              <h2 className="text-center text-primary">
+                Dashboard de {auth.getUser()?.name ?? ""}
+              </h2>
+            </Card.Header>
+            <Card.Body>
+              <Row>
+                <Col xs={12} md={6}>
+                  <div className="p-4">
+                    <h4 className="title-char">
+                      Gráfico de Rutina 
+                    </h4>
+                    <Bar options={options} data={data} />
+                  </div> 
+                </Col>
+                <Col xs={12} md={6}>
+                  <div className="p-4">
+                    <h4 className="title-char">
+                      Gráfico de Cuestionarios 
+                    </h4>
+                    <Line options={options} data={data} />;
+                  </div>
+                </Col>
+              </Row>
+
+              <Row style={{ marginTop: 10 }}>
+                <Col xs={12} md={6}>
+                  <div className="p-4">
+                    <h4 className="title-char">
+                      Gráfico de Retroalimentación
+                    </h4>
+                    <Line options={options} data={dataArea} />
+                  </div> 
+                </Col>
+                <Col xs={12} md={6}>
+                  <div className="p-4">
+                    <h4 className="title-char">
+                      Gráfico de Empleados
+                    </h4>
+                    <Bar options={options} data={data} />
+                  </div>
+                </Col>
+              </Row>
+
+              <Card.Link href="#">Card Link</Card.Link>
+              <Card.Link href="#">Another Link</Card.Link>
+            </Card.Body>
+          </Card>
+
+          
+      
+            {todos.map((post: Todo) => (
+              <div key={post.id}>
+                <h3>{post.title}</h3>
+                <p>{post.completed}</p>
+              </div>
+            ))}
+        </Container>
+     </div> 
     </PortalLayout>
   );
 }

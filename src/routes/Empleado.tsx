@@ -3,6 +3,7 @@ import PortalLayout from "../layout/PortalLayout";
 import { useNavigate } from "react-router-dom";
 import { AuthResponseError } from "../types/types";
 import { API_URL } from "../auth/authConstants";
+import Card from 'react-bootstrap/Card';
 
 export default function Empleado() {
   const [name, setName] = useState("");
@@ -43,47 +44,81 @@ export default function Empleado() {
 
   return (
     <PortalLayout>
-      <form onSubmit={handleSubmit} className="form">
-        <h1>Registro de empleados</h1>
-        {!!errorResponse && <div className="errorMessage">{errorResponse}</div>}
-        <label>Nombre</label>
-        <input
-          type="text"
-          name="name"
-          onChange={(e) => setName(e.target.value)}
-          value={name}
-        />
-        <label>Apellido</label>
-        <input
-          type="text"
-          name="lastname"
-          onChange={(e) => setLastname(e.target.value)}
-          value={lastname}
-        />
-        <label>Edad</label>
-        <input
-          type="text"
-          name="edad"
-          onChange={(e) => setEdad(e.target.value)}
-          value={edad}
-        />
-        <label>Sexo</label>
-        <input
-          type="text"
-          name="sexo"
-          onChange={(e) => setSexo(e.target.value)}
-          value={sexo}
-        />
-        <label>Puesto</label>
-        <input
-          type="text"
-          name="puesto"
-          onChange={(e) => setPuesto(e.target.value)}
-          value={puesto}
-        />
-
-        <button>Crear empleado</button>
-      </form>
+      <div className="container mt-5">
+        <div className="row justify-content-center">
+          <div className="col-md-6">
+            <Card>
+              <Card.Header>
+                <h2 className="text-center text-primary">Registro de empleados</h2>
+              </Card.Header>
+              <Card.Body>
+                <form onSubmit={handleSubmit} >
+                  {!!errorResponse && <div className="alert alert-danger">{errorResponse}</div>}
+                  <div className="form-group mt-3">
+                    <div className="form-group">
+                      <input
+                        type="text"
+                        name="name"
+                        className="form-control"
+                        placeholder="Nombre"
+                        onChange={(e) => setName(e.target.value)}
+                        value={name}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <input
+                        type="text"
+                        name="lastname"
+                        className="form-control"
+                        placeholder="Apellido"
+                        onChange={(e) => setLastname(e.target.value)}
+                        value={lastname}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <input
+                        type="text"
+                        name="edad"
+                        className="form-control"
+                        placeholder="Edad"
+                        onChange={(e) => setEdad(e.target.value)}
+                        value={edad}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <select
+                        name="sexo"
+                        className="form-control"
+                        placeholder="Seleccionar Sexo"
+                        onChange={(e) => setSexo(e.target.value)}
+                        value={sexo}
+                      >
+                        <option value="">Genero</option>
+                        <option value="masculino">Masculino</option>
+                        <option value="femenino">Femenino</option>
+                        <option value="otro">Otro</option>
+                      </select>
+                    </div>
+                    <div className="form-group">
+                      <input
+                        type="text"
+                        name="puesto"
+                        className="form-control"
+                        placeholder="Puesto de trabajo"
+                        onChange={(e) => setPuesto(e.target.value)}
+                        value={puesto}
+                      />
+                    </div>
+                    <div className="text-center">
+                      <button type="submit" className="btn btn-primary btn-block">Registrar</button>
+                    </div>
+                  </div>
+                </form>
+              </Card.Body>
+            </Card>
+          </div>
+        </div>
+      </div>
     </PortalLayout>
   );
 }
