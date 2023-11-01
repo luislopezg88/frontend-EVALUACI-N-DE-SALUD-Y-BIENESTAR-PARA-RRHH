@@ -2,6 +2,10 @@ import { Link } from "react-router-dom";
 import React, { MouseEvent } from "react";
 import { useAuth } from "../auth/AuthProvider";
 import { API_URL } from "../auth/authConstants";
+import '../assets/css/layout.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDashboard, faBook, faCodeBranch, faPowerOff, faUsers } from '@fortawesome/free-solid-svg-icons'
+
 
 interface PortalLayoutProps {
   children?: React.ReactNode;
@@ -29,34 +33,41 @@ export default function PortalLayout({ children }: PortalLayoutProps) {
   }
   return (
     <>
-      <header>
+      <main>{children}</main>
+      <div className="botom-menu">
         <nav>
           <ul>
             <li>
-              <Link to="/dashboard">Dashboard</Link>
+              <Link to="/dashboard" title="dashboard">
+                <FontAwesomeIcon icon={faDashboard} />
+              </Link>
             </li>
             <li>
-              <Link to="/empleados">Empleados</Link>
+              <Link to="/empleados" title="Empleados">
+                  <FontAwesomeIcon icon={faUsers} />
+              </Link>
             </li>
             {/*<li>
-              <Link to="/me">{auth.getUser()?.email ?? ""}</Link>
+              <Link to="/me">{auth.getUser()?.username ?? ""}</Link>
             </li>*/}
             <li>
-              <Link to="/biblioteca">Biblioteca de recursos</Link>
+              <Link to="/biblioteca" title="Biblioteca de Recursos">
+                <FontAwesomeIcon icon={faBook} />
+              </Link>
             </li>
             <li>
-              <Link to="/followup">Seguimiento</Link>
+              <Link to="/followup" title="Seguimiento" >
+                <FontAwesomeIcon icon={faCodeBranch} />
+              </Link>
             </li>
             <li>
-              <a href="#" onClick={handleSignOut}>
-                Salir
+              <a href="#" onClick={handleSignOut} title="Salir">
+                <FontAwesomeIcon icon={faPowerOff} />
               </a>
             </li>
           </ul>
         </nav>
-      </header>
-
-      <main>{children}</main>
+      </div>
     </>
   );
 }

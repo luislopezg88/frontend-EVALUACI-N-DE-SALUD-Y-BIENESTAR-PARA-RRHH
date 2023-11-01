@@ -21,7 +21,6 @@ import {
   Legend,
   Filler
 } from 'chart.js';
-import CardHeader from "react-bootstrap/esm/CardHeader";
 
 interface Todo {
   id: string;

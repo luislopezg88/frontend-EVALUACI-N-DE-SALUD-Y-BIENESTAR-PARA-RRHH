@@ -19,3 +19,33 @@
     align-items: center;
     justify-content: center;
 }
+
+.botom-menu nav ul li{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 40px;
+}
+
+
+.botom-menu nav ul li a:hover{
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .botom-menu nav ul{
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+    } 
+    
+    .botom-menu nav ul li{
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+    }
+}
