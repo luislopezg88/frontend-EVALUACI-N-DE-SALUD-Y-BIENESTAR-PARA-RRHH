@@ -13,6 +13,8 @@ import Empleados from "./routes/Empleados.tsx";
 import Biblioteca from "./routes/Biblioteca.tsx";
 import Seguimiento from "./routes/seguimiento.tsx";
 import Perfil from "./routes/Perfil.tsx";
+import Cuestionarios from "./routes/Cuestionarios.tsx";
+import ResponderCuestionario from "./routes/ResponderCuestionario";
 
 import "./index.css";
 
@@ -52,7 +54,15 @@ const router = createBrowserRouter([
       {
         path: '/profile',
         element: <Perfil />
-      }
+      },
+      {
+        path: "/cuestionarios",
+        element: <Cuestionarios />,
+      },
+      {
+        path: "/responder/:cuestionarioId",
+        element: <ResponderCuestionario />,
+      },
     ],
   },
 ]);
