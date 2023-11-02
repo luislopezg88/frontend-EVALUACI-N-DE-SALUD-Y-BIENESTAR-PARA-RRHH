@@ -15,6 +15,7 @@ export interface User {
   _id: string;
   name: string;
   email: string;
+  tipo: string;
 }
 
 export interface AccessTokenResponse {

@@ -112,7 +112,7 @@ export default function Login() {
               </form>
             </Card.Body>
             <Card.Footer className="text-center">
-              <p>¿No tienes una cuenta? <Link to="signup">Sign Up</Link></p>
+              <p>¿No tienes una cuenta? <Link to={`signup?type=${activeTab}`}>Sign Up</Link></p>
             </Card.Footer>
           </Card>
         </div>

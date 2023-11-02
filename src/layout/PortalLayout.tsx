@@ -4,7 +4,7 @@ import { useAuth } from "../auth/AuthProvider";
 import { API_URL } from "../auth/authConstants";
 import '../assets/css/layout.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDashboard, faBook, faCodeBranch, faPowerOff, faUsers } from '@fortawesome/free-solid-svg-icons'
+import { faDashboard, faBook, faCodeBranch, faPowerOff, faUsers, faUser } from '@fortawesome/free-solid-svg-icons'
 
 
 interface PortalLayoutProps {
@@ -35,38 +35,57 @@ export default function PortalLayout({ children }: PortalLayoutProps) {
     <>
       <main>{children}</main>
       <div className="botom-menu">
-        <nav>
-          <ul>
-            <li>
-              <Link to="/dashboard" title="dashboard">
-                <FontAwesomeIcon icon={faDashboard} />
-              </Link>
-            </li>
-            <li>
-              <Link to="/empleados" title="Empleados">
-                  <FontAwesomeIcon icon={faUsers} />
-              </Link>
-            </li>
-            {/*<li>
-              <Link to="/me">{auth.getUser()?.username ?? ""}</Link>
-            </li>*/}
-            <li>
-              <Link to="/biblioteca" title="Biblioteca de Recursos">
-                <FontAwesomeIcon icon={faBook} />
-              </Link>
-            </li>
-            <li>
-              <Link to="/followup" title="Seguimiento" >
-                <FontAwesomeIcon icon={faCodeBranch} />
-              </Link>
-            </li>
-            <li>
-              <a href="#" onClick={handleSignOut} title="Salir">
-                <FontAwesomeIcon icon={faPowerOff} />
-              </a>
-            </li>
-          </ul>
-        </nav>
+        {auth.getUser()?.tipo == 'employee' ? (
+          <nav>
+            <ul>
+              <li>
+                <Link to="/dashboard" title="dashboard">
+                  <FontAwesomeIcon icon={faDashboard} />
+                </Link>
+              </li>
+              <li>
+                <Link to="/profile" title="Perfil">
+                  <FontAwesomeIcon icon={faUser} />
+                </Link>
+              </li>
+              <li>
+                <Link to="/biblioteca" title="Biblioteca de Recursos">
+                  <FontAwesomeIcon icon={faBook} />
+                </Link>
+              </li>
+              <li>
+                <Link to="/followup" title="Seguimiento" >
+                  <FontAwesomeIcon icon={faCodeBranch} />
+                </Link>
+              </li>
+              <li>
+                <a href="#" onClick={handleSignOut} title="Salir">
+                  <FontAwesomeIcon icon={faPowerOff} />
+                </a>
+              </li>
+            </ul>
+          </nav>
+        ): (
+          <nav>
+            <ul>
+              <li>
+                <Link to="/dashboard" title="dashboard">
+                  <FontAwesomeIcon icon={faDashboard} />
+                </Link>
+              </li>
+              <li>
+                <Link to="/empleados" title="Empleados">
+                    <FontAwesomeIcon icon={faUsers} />
+                </Link>
+              </li>
+              <li>
+                <a href="#" onClick={handleSignOut} title="Salir">
+                  <FontAwesomeIcon icon={faPowerOff} />
+                </a>
+              </li>
+            </ul>
+          </nav>
+        )}
       </div>
     </>
   );

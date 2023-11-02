@@ -5,8 +5,10 @@ import { Navigate, useNavigate, Link } from "react-router-dom";
 import { AuthResponse, AuthResponseError } from "../types/types";
 import { API_URL } from "../auth/authConstants";
 import Card from 'react-bootstrap/Card';
+import  { useQuery } from '../hooks/useQuery';
 
 export default function Signup() {
+  
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
@@ -18,6 +20,7 @@ export default function Signup() {
 
   const auth = useAuth();
   const goTo = useNavigate();
+  const query = useQuery();
 
   async function handleSubmit(e: React.ChangeEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -26,7 +29,7 @@ export default function Signup() {
       const response = await fetch(`${API_URL}/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, username, name, password, edad, sexo, puestoTrabajo }),
+        body: JSON.stringify({ email, username, name, password, edad, sexo, puestoTrabajo, tipo: query.get("type") ? query.get("type") : 'employee' })
       });
       if (response.ok) {
         const json = (await response.json()) as AuthResponse;
@@ -111,7 +114,7 @@ export default function Signup() {
                 <div className="form-group">
                   <select
                     name="sexo"
-                    className="form-control"
+                    className="form-select"
                     placeholder="Seleccionar Sexo"
                     onChange={(e) => setSexo(e.target.value)}
                     value={sexo}

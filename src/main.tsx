@@ -12,6 +12,7 @@ import Empleado from "./routes/Empleado.tsx";
 import Empleados from "./routes/Empleados.tsx";
 import Biblioteca from "./routes/Biblioteca.tsx";
 import Seguimiento from "./routes/seguimiento.tsx";
+import Perfil from "./routes/Perfil.tsx";
 
 import "./index.css";
 
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
         path: "/followup",
         element: <Seguimiento />,
       },
+      {
+        path: '/profile',
+        element: <Perfil />
+      }
     ],
   },
 ]);
