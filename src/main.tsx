@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "bootstrap/dist/css/bootstrap.min.css";
-
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./routes/Login.tsx";
 import Signup from "./routes/Signup.tsx";
@@ -13,6 +12,7 @@ import Empleados from "./routes/Empleados.tsx";
 import Biblioteca from "./routes/Biblioteca.tsx";
 import Seguimiento from "./routes/seguimiento.tsx";
 import Perfil from "./routes/Perfil.tsx";
+import Test from "./routes/Testing.tsx";
 
 import "./index.css";
 
@@ -50,9 +50,13 @@ const router = createBrowserRouter([
         element: <Seguimiento />,
       },
       {
-        path: '/profile',
-        element: <Perfil />
-      }
+        path: "/profile",
+        element: <Perfil />,
+      },
+      {
+        path: "/encuesta",
+        element: <Test />,
+      },
     ],
   },
 ]);

@@ -2,10 +2,17 @@ import { Link } from "react-router-dom";
 import React, { MouseEvent } from "react";
 import { useAuth } from "../auth/AuthProvider";
 import { API_URL } from "../auth/authConstants";
-import '../assets/css/layout.css';
+import "../assets/css/layout.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDashboard, faBook, faCodeBranch, faPowerOff, faUsers, faUser } from '@fortawesome/free-solid-svg-icons'
-
+import {
+  faDashboard,
+  faBook,
+  faCodeBranch,
+  faPowerOff,
+  faUsers,
+  faUser,
+  faPen,
+} from "@fortawesome/free-solid-svg-icons";
 
 interface PortalLayoutProps {
   children?: React.ReactNode;
@@ -31,11 +38,12 @@ export default function PortalLayout({ children }: PortalLayoutProps) {
       console.log(error);
     }
   }
+  console.log(auth.getUser());
   return (
     <>
       <main>{children}</main>
       <div className="botom-menu">
-        {auth.getUser()?.tipo == 'employee' ? (
+        {auth.getUser()?.tipo == "employee" ? (
           <nav>
             <ul>
               <li>
@@ -54,7 +62,7 @@ export default function PortalLayout({ children }: PortalLayoutProps) {
                 </Link>
               </li>
               <li>
-                <Link to="/followup" title="Seguimiento" >
+                <Link to="/followup" title="Seguimiento">
                   <FontAwesomeIcon icon={faCodeBranch} />
                 </Link>
               </li>
@@ -65,7 +73,7 @@ export default function PortalLayout({ children }: PortalLayoutProps) {
               </li>
             </ul>
           </nav>
-        ): (
+        ) : (
           <nav>
             <ul>
               <li>
@@ -75,7 +83,12 @@ export default function PortalLayout({ children }: PortalLayoutProps) {
               </li>
               <li>
                 <Link to="/empleados" title="Empleados">
-                    <FontAwesomeIcon icon={faUsers} />
+                  <FontAwesomeIcon icon={faUsers} />
+                </Link>
+              </li>
+              <li>
+                <Link to="/encuesta" title="encuesta">
+                  <FontAwesomeIcon icon={faPen} />
                 </Link>
               </li>
               <li>
