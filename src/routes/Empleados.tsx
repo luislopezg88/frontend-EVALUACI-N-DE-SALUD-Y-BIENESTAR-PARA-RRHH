@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import PortalLayout from "../layout/PortalLayout";
+import { useNavigate } from "react-router-dom";
 import { API_URL } from "../auth/authConstants";
+
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
 
 export default function ListaEmpleados() {
   const [empleados, setEmpleados] = useState([]);
   const [error, setError] = useState("");
-
+  const history = useNavigate();
   useEffect(() => {
     async function fetchEmpleados() {
       try {
@@ -25,6 +27,10 @@ export default function ListaEmpleados() {
 
     fetchEmpleados();
   }, []);
+
+  const handleEncuesta = ({ _id }: any) => {
+    history(`/cuestionarios/${_id}`);
+  };
 
   return (
     <PortalLayout>
@@ -64,6 +70,7 @@ export default function ListaEmpleados() {
                         {empleados.map(
                           (
                             empleado: {
+                              _id: any;
                               name: string;
                               lastname: string;
                               edad: string;
@@ -79,7 +86,13 @@ export default function ListaEmpleados() {
                               <td>{empleado.sexo}</td>
                               <td>{empleado.puesto}</td>
                               <td>
-                                <button>Iniciar encuesta</button>
+                                <button
+                                  onClick={() => {
+                                    handleEncuesta(empleado);
+                                  }}
+                                >
+                                  Iniciar encuesta
+                                </button>
                               </td>
                             </tr>
                           )

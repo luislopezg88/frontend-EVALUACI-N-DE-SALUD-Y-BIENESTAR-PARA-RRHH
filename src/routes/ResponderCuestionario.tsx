@@ -6,56 +6,61 @@ import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 
 interface Cuestionario {
-    _id: string;
-    titulo: string;
-    instrucciones: string;
-    escala: string[];
-    secciones: any[];
+  _id: string;
+  titulo: string;
+  instrucciones: string;
+  escala: string[];
+  secciones: any[];
 }
 
 interface Respuestas {
-[seccionId: string]: { [preguntaId: string]: string };
+  [seccionId: string]: { [preguntaId: string]: string };
 }
 
 export default function ResponderCuestionario() {
-const { cuestionarioId } = useParams();
-const [cuestionario, setCuestionario] = useState<Cuestionario | null>(null);
-const [respuestas, setRespuestas] = useState<Respuestas>({});
-const [error, setError] = useState("");
+  const { cuestionarioId, idempleado } = useParams();
+  const [cuestionario, setCuestionario] = useState<Cuestionario | null>(null);
+  const [respuestas, setRespuestas] = useState<Respuestas>({});
+  const [error, setError] = useState("");
 
-useEffect(() => {
+  useEffect(() => {
     async function fetchCuestionario() {
-    try {
-        const response = await fetch(`${API_URL}/cuestionarios/${cuestionarioId}`);
+      try {
+        const response = await fetch(
+          `${API_URL}/cuestionarios/${cuestionarioId}`
+        );
         if (response.ok) {
-        const data = await response.json();
-        setCuestionario(data.body.cuestionario);
+          const data = await response.json();
+          setCuestionario(data.body.cuestionario);
         } else {
-        setError("Error al cargar el cuestionario");
+          setError("Error al cargar el cuestionario");
         }
-    } catch (error) {
+      } catch (error) {
         setError("Error de red");
-    }
+      }
     }
 
     fetchCuestionario();
-}, [cuestionarioId]);
+  }, [cuestionarioId]);
 
-const handleOptionChange = (seccionId: string, preguntaId: string, valor: string) => {
+  const handleOptionChange = (
+    seccionId: string,
+    preguntaId: string,
+    valor: string
+  ) => {
     const newRespuestas: Respuestas = { ...respuestas };
     newRespuestas[seccionId] = newRespuestas[seccionId] || {};
     newRespuestas[seccionId][preguntaId] = valor;
     setRespuestas(newRespuestas);
   };
 
-const enviarRespuestas = async () => {
+  const enviarRespuestas = async () => {
     try {
       // Estructura de datos para enviar al servidor
       const data = {
         cuestionario_id: cuestionarioId,
-        fecha_aplicacion: new Date(), // Puedes ajustar la fecha
-        empleado_id: "65405790efda7d631e75fe0c", // Sustituye con el ID de la persona
-
+        fecha_aplicacion: new Date(),
+        empleado_id: idempleado,
         // Estructura de respuestas (conversión de respuestas)
         respuestas: Object.keys(respuestas).map((seccionId) => {
           return Object.keys(respuestas[seccionId]).map((preguntaId) => {
@@ -94,7 +99,9 @@ const enviarRespuestas = async () => {
         {cuestionario ? (
           <Card className="mb-5">
             <Card.Header>
-              <h2 className="text-center text-primary">{cuestionario.titulo}</h2>
+              <h2 className="text-center text-primary">
+                {cuestionario.titulo}
+              </h2>
             </Card.Header>
             <Card.Body className="mb-5">
               <p>{cuestionario.instrucciones}</p>
@@ -104,7 +111,9 @@ const enviarRespuestas = async () => {
                     <h5 className="text-primary">{seccion.nombre}</h5>
                     {seccion.preguntas.map((pregunta: any) => (
                       <Form.Group key={pregunta._id} className="mx-3 mb-4">
-                        <Form.Label className="fw-500">{pregunta.pregunta}</Form.Label>
+                        <Form.Label className="fw-500">
+                          {pregunta.pregunta}
+                        </Form.Label>
                         {cuestionario.escala.map((opcion, index) => (
                           <Form.Check
                             key={index}
@@ -126,13 +135,13 @@ const enviarRespuestas = async () => {
                   </div>
                 ))}
                 <div className="text-center">
-                    <button
+                  <button
                     type="button"
                     className="btn btn-primary btn-block"
                     onClick={enviarRespuestas}
-                    >
-                        Enviar respuestas
-                    </button>
+                  >
+                    Enviar respuestas
+                  </button>
                 </div>
               </Form>
             </Card.Body>

@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import PortalLayout from "../layout/PortalLayout";
 import { API_URL } from "../auth/authConstants";
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
 
-// Define una interfaz para el tipo de cuestionario
 interface Cuestionario {
   _id: string;
   titulo: string;
@@ -12,6 +12,7 @@ interface Cuestionario {
 }
 
 export default function ListaCuestionarios() {
+  const { idempleado } = useParams();
   const [cuestionarios, setCuestionarios] = useState<Cuestionario[]>([]);
   const [error, setError] = useState<string>("");
 
@@ -21,7 +22,7 @@ export default function ListaCuestionarios() {
         const response = await fetch(`${API_URL}/cuestionarios`);
         if (response.ok) {
           const data = await response.json();
-          setCuestionarios(data.body.cuestionario); // Accede a "data.body.cuestionario"
+          setCuestionarios(data.body.cuestionario);
         } else {
           setError("Error al cargar la lista de cuestionarios");
         }
@@ -62,22 +63,26 @@ export default function ListaCuestionarios() {
                           </Card.Header>
                           <Card.Body>
                             <p>{cuestionario.instrucciones}</p>
-                            <Link
-                              to={`/responder/${cuestionario._id}`}
-                              className="d-flex justify-content-end mb-3"
-                            >
-                              <button className="btn btn-primary btn-sm px-2">
-                                Aplicar Cuestionario
-                              </button>
-                            </Link>
-                            <Link
-                              to={`/cuestionarios/${cuestionario._id}`}
-                              className="d-flex justify-content-end mb-3"
-                            >
-                              <button className="btn btn-primary btn-sm px-2">
-                                ver encuestas
-                              </button>
-                            </Link>
+                            {idempleado === "0000" ? null : (
+                              <Link
+                                to={`/responder/${cuestionario._id}/${idempleado}`}
+                                className="d-flex justify-content-end mb-3"
+                              >
+                                <button className="btn btn-primary btn-sm px-2">
+                                  Aplicar Cuestionario
+                                </button>
+                              </Link>
+                            )}
+                            {idempleado !== "0000" ? null : (
+                              <Link
+                                to={`/cuestionarios-resultados/${cuestionario._id}`}
+                                className="d-flex justify-content-end mb-3"
+                              >
+                                <button className="btn btn-primary btn-sm px-2">
+                                  ver encuestas
+                                </button>
+                              </Link>
+                            )}
                           </Card.Body>
                         </Card>
                       </div>

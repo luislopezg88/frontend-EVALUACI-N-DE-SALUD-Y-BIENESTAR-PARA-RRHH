@@ -33,12 +33,52 @@ export default function ListaCuestionarios() {
   const [error, setError] = useState<string>("");
   const [resultados, setResultados] = useState<any[]>([]);
 
-  async function fetchResultados(cuestionarioId: string | undefined) {
+  const adapterEmpleado = (data: any, id: any) => {
+    const [item] = data.filter((item: any) => item._id === id);
+    return `${item?.name ?? ""} ${item?.lastname ?? ""}`;
+  };
+
+  const adapterPreguntas = (preguntas: any, id: any) => {
+    const [obj] = preguntas
+      .map((item: any) => item.preguntas)
+      .flat()
+      .filter((row: any) => row._id === id);
+
+    return obj?.pregunta ?? "";
+  };
+
+  const adapterRespuestas = (preguntas: any, respuestas: any) => {
+    const mutation = respuestas.map((subArray: any) => {
+      return subArray.map((obj: any) => {
+        return {
+          nombre: adapterPreguntas(preguntas, obj.pregunta_id),
+          pregunta_id: obj.pregunta_id,
+          respuesta: obj.respuesta,
+        };
+      });
+    });
+    return mutation;
+  };
+
+  async function fetchResultados(
+    cuestionarioId: string | undefined,
+    preguntas: any
+  ) {
     try {
       const response = await fetch(`${API_URL}/resultados/${cuestionarioId}`);
       if (response.ok) {
         const data = await response.json();
-        setResultados(data.body.data);
+
+        const mutate = data.body.data.map((item: any) => {
+          return {
+            ...item,
+            empleado: adapterEmpleado(data.body.empleados, item.empleado_id),
+            respuestas: adapterRespuestas(preguntas, item?.respuestas ?? []),
+          };
+        });
+        console.log(mutate);
+        //setResultados(mutate);
+        //
       }
     } catch (error) {
       setError("Error al cargar los resultados");
@@ -56,7 +96,10 @@ export default function ListaCuestionarios() {
         if (response.ok) {
           const data = await response.json();
           setCuestionario(data.body.cuestionario);
-          fetchResultados(cuestionarioId);
+          fetchResultados(
+            cuestionarioId,
+            data?.body?.cuestionario?.secciones ?? []
+          );
         } else {
           setError("Error al cargar la lista de cuestionarios");
         }
@@ -67,156 +110,6 @@ export default function ListaCuestionarios() {
 
     fetchCuestionarios();
   }, [cuestionarioId]);
-
-  const adapter = (row: any) => {
-    /*const result = cuestionario.secciones.filter(
-      (item) => item.id == row.pregunta_id
-    );*/
-
-    return "text";
-  };
-  //console.log(cuestionario.secciones);
-
-  let z = [
-    [
-      {
-        pregunta_id: "6544214d0e960a61f7b34385",
-        respuesta: "Nunca",
-      },
-      {
-        pregunta_id: "6544214d0e960a61f7b34386",
-        respuesta: "Rara vez",
-      },
-      {
-        pregunta_id: "6544214d0e960a61f7b34387",
-        respuesta: "A veces",
-      },
-    ],
-    [
-      {
-        pregunta_id: "6544214d0e960a61f7b3438a",
-        respuesta: "Frecuentemente",
-      },
-      {
-        pregunta_id: "6544214d0e960a61f7b3438b",
-        respuesta: "Siempre",
-      },
-      {
-        pregunta_id: "6544214d0e960a61f7b3438c",
-        respuesta: "Nunca",
-      },
-    ],
-    [
-      {
-        pregunta_id: "6544214d0e960a61f7b3438e",
-        respuesta: "Rara vez",
-      },
-      {
-        pregunta_id: "6544214d0e960a61f7b34390",
-        respuesta: "A veces",
-      },
-      {
-        pregunta_id: "6544214d0e960a61f7b34391",
-        respuesta: "Frecuentemente",
-      },
-    ],
-    [
-      {
-        pregunta_id: "6544214d0e960a61f7b34393",
-        respuesta: "Siempre",
-      },
-      {
-        pregunta_id: "6544214d0e960a61f7b34394",
-        respuesta: "Nunca",
-      },
-      {
-        pregunta_id: "6544214d45960a61f7b34394",
-        respuesta: "Rara vez",
-      },
-    ],
-  ];
-
-  let x = [
-    {
-      _id: "6544332049f7f76d31efe6bd",
-      nombre: "Estado de Ánimo y Sentimientos en el Trabajo",
-      preguntas: [
-        {
-          _id: "6544214d0e960a61f7b34385",
-          pregunta: "¿Se siente triste o deprimido debido a su trabajo?",
-        },
-        {
-          _id: "6544214d0e960a61f7b34386",
-          pregunta: "¿Se siente ansioso o estresado pensando en su trabajo?",
-        },
-        {
-          _id: "6544214d0e960a61f7b34387",
-          pregunta: "¿Se siente valorado y reconocido en su puesto de trabajo?",
-        },
-      ],
-    },
-    {
-      _id: "6544214d0e960a61f7b34388",
-      nombre: "Experiencias de Trabajo",
-      preguntas: [
-        {
-          _id: "6544214d0e960a61f7b3438a",
-          pregunta:
-            "¿Considera que sus tareas laborales son excesivamente difíciles o complejas?",
-        },
-        {
-          _id: "6544214d0e960a61f7b3438b",
-          pregunta:
-            "¿Tiene suficientes recursos (tiempo, equipo, apoyo) para hacer su trabajo adecuadamente?",
-        },
-        {
-          _id: "6544214d0e960a61f7b3438c",
-          pregunta: "¿Puede desconectarse del trabajo durante su tiempo libre?",
-        },
-      ],
-    },
-    {
-      _id: "6544214d0e960a61f7b3438d",
-      nombre: "Relaciones Laborales",
-      preguntas: [
-        {
-          _id: "6544214d0e960a61f7b3438e",
-          pregunta:
-            "¿Cómo describiría su relación con sus compañeros de trabajo?",
-        },
-        {
-          _id: "6544214d0e960a61f7b34390",
-          pregunta: "¿Cómo describiría su relación con sus superiores?",
-        },
-        {
-          _id: "6544214d0e960a61f7b34391",
-          pregunta:
-            "¿Ha experimentado conflictos laborales que le afecten personal o emocionalmente?",
-        },
-      ],
-    },
-    {
-      _id: "6544214d0e960a61f7b34392",
-      nombre: "Satisfacción y Motivación Laboral",
-      preguntas: [
-        {
-          _id: "6544214d0e960a61f7b34393",
-          pregunta: "¿Se siente satisfecho con su trabajo actual?",
-        },
-        {
-          _id: "6544214d0e960a61f7b34394",
-          pregunta: "¿Se siente motivado para ir a trabajar cada día?",
-        },
-        {
-          _id: "6544214d45960a61f7b34394",
-          pregunta:
-            "¿Siente que su trabajo tiene un propósito claro y valioso?",
-        },
-      ],
-    },
-  ];
-  //let y = x.map((item) => item.preguntas);
-  //console.log(y);
 
   return (
     <PortalLayout>
@@ -233,21 +126,20 @@ export default function ListaCuestionarios() {
                 </div>
               </Card.Header>
               <Card.Body>
-                {/* Mostrar los resultados aquí en acordeones ordenados por empleados */}
-                {resultados.map((item) => (
-                  <div key={item._id} className="mb-3">
+                {resultados.map((item, index) => (
+                  <div key={index} className="mb-3">
                     <Accordion>
                       <Accordion.Item eventKey="0">
                         <Accordion.Header>
                           <div className="me-3">
-                            Empleado: {item.empleado_id}
+                            Empleado: {item?.empleado ?? ""}
                           </div>
                         </Accordion.Header>
                         <Accordion.Body>
                           {!item.respuestas || item.respuestas.length === 0
                             ? null
-                            : item.respuestas.map((row: any) => (
-                                <div>{adapter(row)}</div>
+                            : item.respuestas.map((row: any, index: number) => (
+                                <div key={index}>ttt</div>
                               ))}
                         </Accordion.Body>
                       </Accordion.Item>
@@ -262,84 +154,3 @@ export default function ListaCuestionarios() {
     </PortalLayout>
   );
 }
-/*
-
-[
- 73+-   {
-        "_id": "6544332049f7f76d31efe6bd",
-        "nombre": "Estado de Ánimo y Sentimientos en el Trabajo",
-        "preguntas": [
-            {
-                "_id": "6544214d0e960a61f7b34385",
-                "pregunta": "¿Se siente triste o deprimido debido a su trabajo?"
-            },
-            {
-                "_id": "6544214d0e960a61f7b34386",
-                "pregunta": "¿Se siente ansioso o estresado pensando en su trabajo?"
-            },
-            {
-                "_id": "6544214d0e960a61f7b34387",
-                "pregunta": "¿Se siente valorado y reconocido en su puesto de trabajo?"
-            }
-        ]
-    },
-    {
-        "_id": "6544214d0e960a61f7b34388",
-        "nombre": "Experiencias de Trabajo",
-        "preguntas": [
-            {
-                "_id": "6544214d0e960a61f7b3438a",
-                "pregunta": "¿Considera que sus tareas laborales son excesivamente difíciles o complejas?"
-            },
-            {
-                "_id": "6544214d0e960a61f7b3438b",
-                "pregunta": "¿Tiene suficientes recursos (tiempo, equipo, apoyo) para hacer su trabajo adecuadamente?"
-            },
-            {
-                "_id": "6544214d0e960a61f7b3438c",
-                "pregunta": "¿Puede desconectarse del trabajo durante su tiempo libre?"
-            }
-        ]
-    },
-    {
-        "_id": "6544214d0e960a61f7b3438d",
-        "nombre": "Relaciones Laborales",
-        "preguntas": [
-            {
-                "_id": "6544214d0e960a61f7b3438e",
-                "pregunta": "¿Cómo describiría su relación con sus compañeros de trabajo?"
-            },
-            {
-                "_id": "6544214d0e960a61f7b34390",
-                "pregunta": "¿Cómo describiría su relación con sus superiores?"
-            },
-            {
-                "_id": "6544214d0e960a61f7b34391",
-                "pregunta": "¿Ha experimentado conflictos laborales que le afecten personal o emocionalmente?"
-            }
-        ]
-    },
-    {
-        "_id": "6544214d0e960a61f7b34392",
-        "nombre": "Satisfacción y Motivación Laboral",
-        "preguntas": [
-            {
-                "_id": "6544214d0e960a61f7b34393",
-                "pregunta": "¿Se siente satisfecho con su trabajo actual?"
-            },
-            {
-                "_id": "6544214d0e960a61f7b34394",
-                "pregunta": "¿Se siente motivado para ir a trabajar cada día?"
-            },
-            {
-                "_id": "6544214d45960a61f7b34394",
-                "pregunta": "¿Siente que su trabajo tiene un propósito claro y valioso?"
-            }
-        ]
-    }
-]
-*/
-
-/*
-
-*/

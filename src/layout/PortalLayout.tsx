@@ -87,7 +87,7 @@ export default function PortalLayout({ children }: PortalLayoutProps) {
                 </Link>
               </li>
               <li>
-                <Link to="/encuesta" title="encuesta">
+                <Link to="/cuestionarios/0000" title="encuesta">
                   <FontAwesomeIcon icon={faPen} />
                 </Link>
               </li>
