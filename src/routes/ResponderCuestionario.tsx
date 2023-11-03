@@ -54,7 +54,7 @@ const enviarRespuestas = async () => {
       const data = {
         cuestionario_id: cuestionarioId,
         fecha_aplicacion: new Date(), // Puedes ajustar la fecha
-        persona_id: "65405790efda7d631e75fe0c", // Sustituye con el ID de la persona
+        empleado_id: "65405790efda7d631e75fe0c", // Sustituye con el ID de la persona
 
         // Estructura de respuestas (conversión de respuestas)
         respuestas: Object.keys(respuestas).map((seccionId) => {
