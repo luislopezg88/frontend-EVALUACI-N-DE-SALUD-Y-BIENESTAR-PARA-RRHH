@@ -55,7 +55,7 @@ export default function Login() {
     }
   }
   if (auth.isAuthenticated) {
-    return <Navigate to="/dashboard" />;
+    return <Navigate to="/home" />;
   }
 
   return (

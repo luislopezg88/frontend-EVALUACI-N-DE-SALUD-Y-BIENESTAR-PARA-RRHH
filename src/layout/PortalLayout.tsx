@@ -5,12 +5,12 @@ import { API_URL } from "../auth/authConstants";
 import "../assets/css/layout.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faDashboard,
   faBook,
   faCodeBranch,
   faPowerOff,
   faUsers,
   faUser,
+  faHome,
   faPen,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -47,8 +47,8 @@ export default function PortalLayout({ children }: PortalLayoutProps) {
           <nav>
             <ul>
               <li>
-                <Link to="/dashboard" title="dashboard">
-                  <FontAwesomeIcon icon={faDashboard} />
+                <Link to="/home" title="home">
+                  <FontAwesomeIcon icon={faHome} />
                 </Link>
               </li>
               <li>
@@ -77,8 +77,8 @@ export default function PortalLayout({ children }: PortalLayoutProps) {
           <nav>
             <ul>
               <li>
-                <Link to="/dashboard" title="dashboard">
-                  <FontAwesomeIcon icon={faDashboard} />
+                <Link to="/home" title="home">
+                  <FontAwesomeIcon icon={faHome} />
                 </Link>
               </li>
               <li>

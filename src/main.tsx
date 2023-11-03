@@ -5,16 +5,17 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./routes/Login.tsx";
 import Signup from "./routes/Signup.tsx";
 import { AuthProvider } from "./auth/AuthProvider.tsx";
-import Dashboard from "./routes/Dashboard.tsx";
+import Home from "./routes/Home.tsx";
 import ProtectedRoute from "./routes/ProtectedRoute.tsx";
 import Empleado from "./routes/Empleado.tsx";
 import Empleados from "./routes/Empleados.tsx";
 import Biblioteca from "./routes/Biblioteca.tsx";
 import Seguimiento from "./routes/seguimiento.tsx";
 import Perfil from "./routes/Perfil.tsx";
+import CreateTaks from "./routes/CreateTaks.tsx";
 import Cuestionarios from "./routes/Cuestionarios.tsx";
 import ResponderCuestionario from "./routes/ResponderCuestionario";
-import Test from "./routes/Testing.tsx";
+import ResultadosCuestionario from "./routes/ResultadosCuestionario.tsx";
 
 import "./index.css";
 
@@ -32,8 +33,8 @@ const router = createBrowserRouter([
     element: <ProtectedRoute />,
     children: [
       {
-        path: "/dashboard",
-        element: <Dashboard />,
+        path: "/home",
+        element: <Home />,
       },
       {
         path: "/me",
@@ -64,8 +65,12 @@ const router = createBrowserRouter([
         element: <ResponderCuestionario />,
       },
       {
-        path: "/encuesta",
-        element: <Test />,
+        path: "/cuestionarios/:cuestionarioId",
+        element: <ResultadosCuestionario />,
+      },
+      {
+        path: "/savetaks",
+        element: <CreateTaks />,
       },
     ],
   },
