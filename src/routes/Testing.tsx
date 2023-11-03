@@ -1,8 +1,7 @@
-import { useState } from "react";
 import PortalLayout from "../layout/PortalLayout";
 
 export default function Test() {
-  const API_KEY = "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";
+  const API_KEY = "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";
 
   async function getCompletion(prompt: string) {
     try {
@@ -13,8 +12,7 @@ export default function Test() {
           Authorization: `Bearer ${API_KEY}`,
         },
         body: JSON.stringify({
-          model: "gpt-3.5-turbo",
-          // prompt: "give a random example of programming language",
+          model: "text-davinci-003",
           prompt: prompt,
           max_tokens: 5,
         }),
@@ -27,7 +25,7 @@ export default function Test() {
       console.log("error");
     }
   }
-
+  getCompletion("que es la ia");
   return (
     <PortalLayout>
       <div className="container">
