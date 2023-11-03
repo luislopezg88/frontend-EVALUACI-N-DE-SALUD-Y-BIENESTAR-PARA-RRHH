@@ -38,7 +38,7 @@ export default function PortalLayout({ children }: PortalLayoutProps) {
       console.log(error);
     }
   }
-  console.log(auth.getUser());
+  //console.log(auth.getUser());
   return (
     <>
       <main>{children}</main>

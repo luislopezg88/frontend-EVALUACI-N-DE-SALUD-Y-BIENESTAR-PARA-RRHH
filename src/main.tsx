@@ -57,11 +57,11 @@ const router = createBrowserRouter([
         element: <Perfil />,
       },
       {
-        path: "/cuestionarios",
+        path: "/cuestionarios/:idempleado",
         element: <Cuestionarios />,
       },
       {
-        path: "/responder/:cuestionarioId",
+        path: "/responder/:cuestionarioId/:idempleado",
         element: <ResponderCuestionario />,
       },
       {
