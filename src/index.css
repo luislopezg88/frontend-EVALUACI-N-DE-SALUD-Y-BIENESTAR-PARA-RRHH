@@ -87,3 +87,14 @@ a {
   color: white;
   font-size: 14px;
 }
+.fw-500{
+  font-weight: 500;
+}
+.form-check-input[type=radio] {
+  border-radius: 50%;
+  border-color: #776dbc;
+  cursor: pointer;
+}
+.form-check {
+  cursor: pointer;
+}
