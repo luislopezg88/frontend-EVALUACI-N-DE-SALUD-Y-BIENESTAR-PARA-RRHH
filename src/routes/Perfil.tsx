@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import PortalLayout from "../layout/PortalLayout";
 import { useAuth } from "../auth/AuthProvider";
 import { API_URL } from "../auth/authConstants";
-
+import Toast from 'react-bootstrap/Toast';
+import ToastContainer from 'react-bootstrap/ToastContainer';
 
 export default function Perfil() {
   const auth = useAuth();
@@ -10,11 +11,15 @@ export default function Perfil() {
   const [phone, setPhone] = useState("");
   const [qualification, setQualification] = useState("");
   const [birthdate, setBirthdate] = useState("");
-  const [error, setError] = useState(false);
-
+  const [toatsData, setToatsData] = useState({
+    show: false,
+    title: '',
+    message: '',
+    bg: 'Success'
+  });
+ 
   async function getProfile() {
     const accessToken = auth.getAccessToken();
-    console.log(auth.getUser())
     try {
       const response = await fetch(`${API_URL}/perfil/${auth.getUser()?.id}`, {
         method: "GET",
@@ -26,17 +31,17 @@ export default function Perfil() {
 
       if (response.ok) {
         const json = await response.json();
-        console.log('json', json)
         if(json.body?.perfil) {
           setAddres(json.body?.perfil.address)
           setPhone(json.body?.perfil.phone)
           setQualification(json.body?.perfil.qualification)
-          setBirthdate(json.body?.perfil.birthdate)
+          const getArrayDate = json.body?.perfil.birthdate.split('T');
+          setBirthdate(getArrayDate[0])
         }
-        //setTodos(json);
       }
     } catch (error) {
-      setError(false);
+      console.log(error);
+      setToatsData({ show: true, title: 'Atención', message: 'Ocurrio un error intente nuevamente', bg: 'Danger' });
     }
   }
 
@@ -59,11 +64,10 @@ export default function Perfil() {
           body: JSON.stringify({ address, phone, qualification, birthdate }),
         });
         if (response.ok) {
-          /*const todo = (await response.json()) as Todo;
-          setTodos([...todos, todo]);*/
-          alert("datos actualizados")
+          setToatsData({ show: true, title: 'Éxito', message: 'Perfil actualizado correctamente', bg: 'Success' });
         }
       } catch (error) {
+        setToatsData({ show: true, title: 'Atención', message: 'Ocurrio un error intente nuevamente', bg: 'Danger' });
         console.log(error);
       }
     }
@@ -148,6 +152,27 @@ export default function Perfil() {
             </form>
           </div>
         </div>
+
+          <ToastContainer
+            className="p-3"
+            position={'top-end'}
+            style={{ zIndex: 1 }}
+          >
+            <Toast 
+              bg={toatsData.bg}
+              onClose={() => setToatsData({ show: false, title: '', message: '', bg: 'Success' })} show={toatsData.show} delay={3000} autohide>
+              <Toast.Header> 
+                <img
+                  src="holder.js/20x20?text=%20"
+                  className="rounded me-2"
+                  alt=""
+                />
+                <strong className="me-auto">{toatsData.title}</strong>
+              </Toast.Header>
+              <Toast.Body>{toatsData.message}</Toast.Body>
+            </Toast>
+          </ToastContainer>
+
       </div>
     </PortalLayout>
   );
