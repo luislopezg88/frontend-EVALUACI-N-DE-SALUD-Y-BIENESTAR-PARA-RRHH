@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import PortalLayout from "../layout/PortalLayout";
 import { useAuth } from "../auth/AuthProvider";
 import { API_URL } from "../auth/authConstants";
-
+import { converDatetoString } from "../helpers/indes";
 
 interface Taks {
-  id?: string;
+  _id?: string;
   name: string;
   description: string;
   completed: boolean;
@@ -25,19 +25,20 @@ export default function Routine() {
 
   async function getTaks() {
     const accessToken = auth.getAccessToken();
+    const today = converDatetoString(new Date());
     try {
-      const response = await fetch(`${API_URL}/taks/${auth.getUser()?.id}`, {
+      const response = await fetch(`${API_URL}/taks/today/${auth.getUser()?.id}/date/${today}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
       });
-
       if (response.ok) {
         const json = await response.json();
-        setTaks(json);
-        console.log(json);
+        if(json?.body?.tareas){
+          setTaks(json?.body?.tareas);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -70,24 +71,26 @@ export default function Routine() {
 
             <div className="row">
               <div className="col-12">
-                <table className="table table-striped">
-                  <thead>
-                    <tr>
-                      <th>Nombre</th>
-                      <th>descrición</th>
-                      <th>Completada</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {task.map((tak: Taks) =>(
-                      <tr key={tak.id}>
-                        <td>{tak.name}</td>
-                        <td>{tak.description}</td>
-                        <td>{tak.completed}</td>
+                <div className="table-responsive">
+                  <table className="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Nombre</th>
+                        <th>descrición</th>
+                        <th>Completada</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {task.map((tak: Taks) =>(
+                        <tr key={tak._id}>
+                          <td>{tak.name}</td>
+                          <td>{tak.description}</td>
+                          <td>{tak.completed}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
