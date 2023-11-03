@@ -6,13 +6,14 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./routes/Login.tsx";
 import Signup from "./routes/Signup.tsx";
 import { AuthProvider } from "./auth/AuthProvider.tsx";
-import Dashboard from "./routes/Dashboard.tsx";
+import Home from "./routes/Home.tsx";
 import ProtectedRoute from "./routes/ProtectedRoute.tsx";
 import Empleado from "./routes/Empleado.tsx";
 import Empleados from "./routes/Empleados.tsx";
 import Biblioteca from "./routes/Biblioteca.tsx";
 import Seguimiento from "./routes/seguimiento.tsx";
 import Perfil from "./routes/Perfil.tsx";
+import CreateTaks from "./routes/CreateTaks.tsx";
 
 import "./index.css";
 
@@ -30,8 +31,8 @@ const router = createBrowserRouter([
     element: <ProtectedRoute />,
     children: [
       {
-        path: "/dashboard",
-        element: <Dashboard />,
+        path: "/home",
+        element: <Home />,
       },
       {
         path: "/me",
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
       {
         path: '/profile',
         element: <Perfil />
+      },
+      {
+        path: '/savetaks',
+        element: <CreateTaks />
       }
     ],
   },
