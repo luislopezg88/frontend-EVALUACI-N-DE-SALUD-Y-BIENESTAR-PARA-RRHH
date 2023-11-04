@@ -1,12 +1,10 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import PortalLayout from "../layout/PortalLayout";
 import { API_URL } from "../auth/authConstants";
 import Card from "react-bootstrap/Card";
-import { Link } from "react-router-dom";
 import { Accordion } from "react-bootstrap";
 
-// Define una interfaz para el tipo de cuestionario
 interface Cuestionario {
   _id: string;
   titulo: string;
@@ -19,96 +17,74 @@ interface Resultado {
   cuestionario_id: string;
   empleado_id: string;
   respuestas: any[];
+  empleado: string;
   // Otros campos de resultado
 }
 
 export default function ListaCuestionarios() {
   const { cuestionarioId } = useParams();
-  const [cuestionario, setCuestionario] = useState<Cuestionario>({
-    _id: "",
-    titulo: "",
-    instrucciones: "",
-    secciones: [],
-  });
+  const [cuestionario, setCuestionario] = useState<Cuestionario>();
   const [error, setError] = useState<string>("");
-  const [resultados, setResultados] = useState<any[]>([]);
+  const [resultados, setResultados] = useState<Resultado[]>([]);
+  const [preguntasMap, setPreguntasMap] = useState<any>({});
+  let ultimaSeccionImpresa = "";
 
-  const adapterEmpleado = (data: any, id: any) => {
-    const [item] = data.filter((item: any) => item._id === id);
-    return `${item?.name ?? ""} ${item?.lastname ?? ""}`;
-  };
-
-  const adapterPreguntas = (preguntas: any, id: any) => {
-    const [obj] = preguntas
-      .map((item: any) => item.preguntas)
-      .flat()
-      .filter((row: any) => row._id === id);
-
-    return obj?.pregunta ?? "";
-  };
-
-  const adapterRespuestas = (preguntas: any, respuestas: any) => {
-    const mutation = respuestas.map((subArray: any) => {
-      return subArray.map((obj: any) => {
-        return {
-          nombre: adapterPreguntas(preguntas, obj.pregunta_id),
-          pregunta_id: obj.pregunta_id,
-          respuesta: obj.respuesta,
-        };
-      });
-    });
-    return mutation;
-  };
-
-  async function fetchResultados(
-    cuestionarioId: string | undefined,
-    preguntas: any
-  ) {
+  async function fetchResultados(cuestionarioId: string | undefined) {
     try {
       const response = await fetch(`${API_URL}/resultados/${cuestionarioId}`);
       if (response.ok) {
         const data = await response.json();
+        const empleadosData = data.body.empleados;
 
-        const mutate = data.body.data.map((item: any) => {
+        const mutate = data.body.data.map((item: Resultado) => {
+          const empleadoData = empleadosData.find(
+            (empleado: any) => empleado._id === item.empleado_id
+          );
+          const empleadoNombre = `${empleadoData?.name ?? ""} ${empleadoData?.lastname ?? ""}`;
+
           return {
             ...item,
-            empleado: adapterEmpleado(data.body.empleados, item.empleado_id),
-            respuestas: adapterRespuestas(preguntas, item?.respuestas ?? []),
+            empleado: empleadoNombre,
           };
         });
-        console.log(mutate);
-        //setResultados(mutate);
-        //
+        setResultados(mutate);
+      } else {
+        setError("Error al cargar los resultados");
       }
     } catch (error) {
       setError("Error al cargar los resultados");
     }
   }
 
-  useEffect(() => {
-    //const response = await fetch(`${API_URL}/cuestionarios`);
-    async function fetchCuestionarios() {
-      try {
-        const response = await fetch(
-          `${API_URL}/cuestionarios/${cuestionarioId}`
-        );
+  async function fetchCuestionario(cuestionarioId: string | undefined) {
+    try {
+      const response = await fetch(`${API_URL}/cuestionarios/${cuestionarioId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setCuestionario(data.body.cuestionario);
+        fetchResultados(cuestionarioId);
 
-        if (response.ok) {
-          const data = await response.json();
-          setCuestionario(data.body.cuestionario);
-          fetchResultados(
-            cuestionarioId,
-            data?.body?.cuestionario?.secciones ?? []
-          );
-        } else {
-          setError("Error al cargar la lista de cuestionarios");
-        }
-      } catch (error) {
-        setError("Error de red");
+        const newPreguntasMap: any = {};
+        data.body.cuestionario.secciones.forEach((seccion: any) => {
+          seccion.preguntas.forEach((pregunta: any) => {
+            newPreguntasMap[pregunta._id] = {
+              pregunta: pregunta.pregunta,
+              seccion: seccion.nombre,
+            };
+          });
+        });
+
+        setPreguntasMap(newPreguntasMap);
+      } else {
+        setError("Error al cargar la lista de cuestionarios");
       }
+    } catch (error) {
+      setError("Error de red");
     }
+  }
 
-    fetchCuestionarios();
+  useEffect(() => {
+    fetchCuestionario(cuestionarioId);
   }, [cuestionarioId]);
 
   return (
@@ -118,29 +94,59 @@ export default function ListaCuestionarios() {
           <div className="col-12">
             <Card>
               <Card.Header>
-                <h2 className="text-center text-primary">
-                  Resultados del Cuestionario
-                </h2>
-                <div className="text-center text-primary">
-                  Cuestionario: {cuestionario?.titulo ?? ""}
-                </div>
+                <h2 className="text-center text-primary">Resultados del Cuestionario</h2>
+                <div className="text-center text-primary">{cuestionario?.titulo ?? ""}</div>
               </Card.Header>
               <Card.Body>
-                {resultados.map((item, index) => (
+                {resultados.map((item: Resultado, index: number) => (
                   <div key={index} className="mb-3">
                     <Accordion>
                       <Accordion.Item eventKey="0">
                         <Accordion.Header>
-                          <div className="me-3">
-                            Empleado: {item?.empleado ?? ""}
-                          </div>
+                          <div className="me-3">Empleado: {item?.empleado ?? ""}</div>
                         </Accordion.Header>
                         <Accordion.Body>
-                          {!item.respuestas || item.respuestas.length === 0
-                            ? null
-                            : item.respuestas.map((row: any, index: number) => (
-                                <div key={index}>ttt</div>
+                          {item.respuestas && item.respuestas.length > 0 ? (
+                            <ul>
+                              {item.respuestas.map((respuestasGrupo: any, respIndex: number) => (
+                                <div key={respIndex}>
+                                  {respuestasGrupo.map((respuesta: any, respuestaIndex: number) => {
+                                    if (preguntasMap[respuesta.pregunta_id].seccion !== ultimaSeccionImpresa) {
+                                      ultimaSeccionImpresa = preguntasMap[respuesta.pregunta_id].seccion;
+                                      return (
+                                        <div key={respuestaIndex}>
+                                          <p>
+                                            <h5 className="text-center p-2" style={{"background": "#cccccc"}}>
+                                              {preguntasMap[respuesta.pregunta_id].seccion}
+                                            </h5>{" "}
+                                          </p>
+                                          <p className="mb-0">
+                                            &bull; {preguntasMap[respuesta.pregunta_id].pregunta}
+                                          </p>
+                                          <p className="mx-2">
+                                            <strong>{respuesta.respuesta}</strong> 
+                                          </p>
+                                        </div>
+                                      );
+                                    } else {
+                                      return (
+                                        <div key={respuestaIndex}>
+                                          <p className="mb-0">
+                                            &bull; {preguntasMap[respuesta.pregunta_id].pregunta}
+                                          </p>
+                                          <p className="mx-2">
+                                            <strong>{respuesta.respuesta}</strong> 
+                                          </p>
+                                        </div>
+                                      );
+                                    }
+                                  })}
+                                </div>
                               ))}
+                            </ul>
+                          ) : (
+                            <p>No hay respuestas para este empleado.</p>
+                          )}
                         </Accordion.Body>
                       </Accordion.Item>
                     </Accordion>
