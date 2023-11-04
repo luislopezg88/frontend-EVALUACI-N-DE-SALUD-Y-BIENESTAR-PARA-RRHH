@@ -4,6 +4,7 @@ import PortalLayout from "../layout/PortalLayout";
 import { API_URL } from "../auth/authConstants";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
+import { Button, Modal } from "react-bootstrap";
 
 interface Cuestionario {
   _id: string;
@@ -17,11 +18,23 @@ interface Respuestas {
   [seccionId: string]: { [preguntaId: string]: string };
 }
 
+const listaExperiencia = [
+  { name: "Excelente", icon: "" },
+  { name: "Bien", icon: "" },
+  { name: "Normal", icon: "" },
+  { name: "Meh", icon: "" },
+  { name: "Mal", icon: "" },
+];
 export default function ResponderCuestionario() {
   const { cuestionarioId, idempleado } = useParams();
   const [cuestionario, setCuestionario] = useState<Cuestionario | null>(null);
   const [respuestas, setRespuestas] = useState<Respuestas>({});
   const [error, setError] = useState("");
+  const [show, setShow] = useState(false);
+  const [seleccion, setSeleccion] = useState("");
+  const [texto, setTexto] = useState("");
+
+  const handleClose = () => setShow(false);
 
   useEffect(() => {
     async function fetchCuestionario() {
@@ -83,12 +96,36 @@ export default function ResponderCuestionario() {
       if (response.ok) {
         // Respuestas guardadas con éxito
         console.log("Respuestas guardadas exitosamente.");
+        setShow(true);
       } else {
         // Error al guardar respuestas
         setError("Error al guardar respuestas.");
       }
     } catch (error) {
       // Error de red u otro error
+      setError("Error de red");
+    }
+  };
+
+  const enviarExperiancia = async () => {
+    try {
+      const data = { seleccion, texto };
+      const response = await fetch(`${API_URL}/evaluacion`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      console.log(response);
+      if (response.ok) {
+        console.log("Respuestas guardadas exitosamente.");
+        setShow(false);
+      } else {
+        setError("Error al guardar respuestas.");
+        setShow(false);
+      }
+    } catch (error) {
       setError("Error de red");
     }
   };
@@ -151,6 +188,46 @@ export default function ResponderCuestionario() {
         )}
         {error && <div className="alert alert-danger">{error}</div>}
       </div>
+      <Modal show={true} onHide={handleClose} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>Evaluanos</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h2>como nos calificarias</h2>
+          <div className="d-flex mt-2 mb-2">
+            {listaExperiencia.map((item, index) => (
+              <div key={index} className="me-2">
+                <div></div>
+                <Button
+                  onClick={() => {
+                    setSeleccion(item.name);
+                  }}
+                >
+                  {item.name}
+                </Button>
+              </div>
+            ))}
+          </div>
+          <div>
+            <p>Como podemos mejorar</p>
+            <input
+              type="text-area"
+              value={texto}
+              onChange={(e) => {
+                setTexto(e.target.value);
+              }}
+            />
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Cerrar
+          </Button>
+          <Button variant="primary" onClick={enviarExperiancia}>
+            Guardar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </PortalLayout>
   );
 }
