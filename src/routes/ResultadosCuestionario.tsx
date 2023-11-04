@@ -1,12 +1,10 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import PortalLayout from "../layout/PortalLayout";
 import { API_URL } from "../auth/authConstants";
 import Card from "react-bootstrap/Card";
-import { Link } from "react-router-dom";
 import { Accordion } from "react-bootstrap";
 
-// Define una interfaz para el tipo de cuestionario
 interface Cuestionario {
   _id: string;
   titulo: string;
@@ -19,7 +17,6 @@ interface Resultado {
   cuestionario_id: string;
   empleado_id: string;
   respuestas: any[];
-  // Otros campos de resultado
 }
 
 export default function ListaCuestionarios() {
@@ -76,9 +73,8 @@ export default function ListaCuestionarios() {
             respuestas: adapterRespuestas(preguntas, item?.respuestas ?? []),
           };
         });
-        console.log(mutate);
-        //setResultados(mutate);
-        //
+        //console.log(mutate);
+        setResultados(mutate);
       }
     } catch (error) {
       setError("Error al cargar los resultados");
@@ -86,7 +82,6 @@ export default function ListaCuestionarios() {
   }
 
   useEffect(() => {
-    //const response = await fetch(`${API_URL}/cuestionarios`);
     async function fetchCuestionarios() {
       try {
         const response = await fetch(
