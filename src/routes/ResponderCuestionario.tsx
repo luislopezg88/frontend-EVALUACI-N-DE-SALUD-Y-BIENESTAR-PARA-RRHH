@@ -34,8 +34,6 @@ export default function ResponderCuestionario() {
   const [seleccion, setSeleccion] = useState("");
   const [texto, setTexto] = useState("");
 
-  const handleClose = () => setShow(false);
-
   useEffect(() => {
     async function fetchCuestionario() {
       try {
@@ -69,7 +67,6 @@ export default function ResponderCuestionario() {
 
   const enviarRespuestas = async () => {
     try {
-      // Estructura de datos para enviar al servidor
       const data = {
         cuestionario_id: cuestionarioId,
         fecha_aplicacion: new Date(),
@@ -92,44 +89,22 @@ export default function ResponderCuestionario() {
         },
         body: JSON.stringify(data),
       });
-      console.log(response);
+
       if (response.ok) {
-        // Respuestas guardadas con éxito
-        console.log("Respuestas guardadas exitosamente.");
         setShow(true);
       } else {
-        // Error al guardar respuestas
         setError("Error al guardar respuestas.");
       }
     } catch (error) {
-      // Error de red u otro error
       setError("Error de red");
     }
   };
 
   const enviarExperiancia = async () => {
-    try {
-      const data = { seleccion, texto };
-      const response = await fetch(`${API_URL}/evaluacion`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      console.log(response);
-      if (response.ok) {
-        console.log("Respuestas guardadas exitosamente.");
-        setShow(false);
-      } else {
-        setError("Error al guardar respuestas.");
-        setShow(false);
-      }
-    } catch (error) {
-      setError("Error de red");
-    }
+    setShow(true);
   };
 
+  const handleClose = () => setShow(!show);
   return (
     <PortalLayout>
       <div className="container mt-5 mb-5">
@@ -175,9 +150,10 @@ export default function ResponderCuestionario() {
                   <button
                     type="button"
                     className="btn btn-primary btn-block"
-                    onClick={enviarRespuestas}
+                    onClick={enviarExperiancia}
+                    //onClick={enviarRespuestas}
                   >
-                    Enviar respuestas
+                    Finalizar
                   </button>
                 </div>
               </Form>
@@ -188,7 +164,7 @@ export default function ResponderCuestionario() {
         )}
         {error && <div className="alert alert-danger">{error}</div>}
       </div>
-      <Modal show={true} onHide={handleClose} size="lg">
+      <Modal show={show} onHide={handleClose} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Evaluanos</Modal.Title>
         </Modal.Header>
@@ -223,7 +199,10 @@ export default function ResponderCuestionario() {
           <Button variant="secondary" onClick={handleClose}>
             Cerrar
           </Button>
-          <Button variant="primary" onClick={enviarExperiancia}>
+          <Button
+            variant="primary" //onClick={enviarExperiancia}
+            onClick={enviarRespuestas}
+          >
             Guardar
           </Button>
         </Modal.Footer>
