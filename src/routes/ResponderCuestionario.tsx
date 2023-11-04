@@ -5,6 +5,7 @@ import { API_URL } from "../auth/authConstants";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import { Button, Modal } from "react-bootstrap";
+import Alert from "react-bootstrap/Alert";
 
 interface Cuestionario {
   _id: string;
@@ -33,6 +34,7 @@ export default function ResponderCuestionario() {
   const [show, setShow] = useState(false);
   const [seleccion, setSeleccion] = useState("");
   const [texto, setTexto] = useState("");
+  const [alert, setAlert] = useState(false);
 
   useEffect(() => {
     async function fetchCuestionario() {
@@ -71,6 +73,8 @@ export default function ResponderCuestionario() {
         cuestionario_id: cuestionarioId,
         fecha_aplicacion: new Date(),
         empleado_id: idempleado,
+        seleccion_satifaccion: seleccion,
+        texto_satifaccion: texto,
         // Estructura de respuestas (conversión de respuestas)
         respuestas: Object.keys(respuestas).map((seccionId) => {
           return Object.keys(respuestas[seccionId]).map((preguntaId) => {
@@ -91,7 +95,8 @@ export default function ResponderCuestionario() {
       });
 
       if (response.ok) {
-        setShow(true);
+        setShow(false);
+        setAlert(true);
       } else {
         setError("Error al guardar respuestas.");
       }
@@ -107,6 +112,15 @@ export default function ResponderCuestionario() {
   const handleClose = () => setShow(!show);
   return (
     <PortalLayout>
+      <Alert
+        show={alert}
+        variant="primary"
+        onClose={() => setAlert(false)}
+        dismissible
+      >
+        <Alert.Heading>Completado!</Alert.Heading>
+        <p>Cuestionario guardado existosamente .</p>
+      </Alert>
       <div className="container mt-5 mb-5">
         {cuestionario ? (
           <Card className="mb-5">
@@ -175,7 +189,8 @@ export default function ResponderCuestionario() {
               <div key={index} className="me-2">
                 <div></div>
                 <Button
-                  className="btn btn-primary btn-sm px-2"
+                  variant={seleccion === item.name ? "secondary" : "primary"}
+                  className={`btn-sm px-2`}
                   onClick={() => {
                     setSeleccion(item.name);
                   }}
