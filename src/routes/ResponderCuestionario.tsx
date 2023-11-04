@@ -190,15 +190,16 @@ export default function ResponderCuestionario() {
       </div>
       <Modal show={true} onHide={handleClose} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>Evaluanos</Modal.Title>
+          <Modal.Title>Evalúanos</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <h2>como nos calificarias</h2>
-          <div className="d-flex mt-2 mb-2">
+          <h2 className="text-center mb-4">¿Como nos calificarías?</h2>
+          <div className="d-flex justify-content-center mt-2 mb-4">
             {listaExperiencia.map((item, index) => (
               <div key={index} className="me-2">
                 <div></div>
                 <Button
+                  className="btn btn-primary btn-sm px-2"
                   onClick={() => {
                     setSeleccion(item.name);
                   }}
@@ -209,14 +210,14 @@ export default function ResponderCuestionario() {
             ))}
           </div>
           <div>
-            <p>Como podemos mejorar</p>
-            <input
-              type="text-area"
+            <h6 className="mb-0">¿Como podemos mejorar?</h6>
+            <textarea
+              className="w-100"
               value={texto}
               onChange={(e) => {
                 setTexto(e.target.value);
               }}
-            />
+            ></textarea>
           </div>
         </Modal.Body>
         <Modal.Footer>
