@@ -4,6 +4,7 @@ import PortalLayout from "../layout/PortalLayout";
 import { API_URL } from "../auth/authConstants";
 import Card from "react-bootstrap/Card";
 import { Accordion } from "react-bootstrap";
+import img from "../assets/ia/agotado-1.jpg";
 
 interface Cuestionario {
   _id: string;
@@ -18,6 +19,7 @@ interface Resultado {
   empleado_id: string;
   respuestas: any[];
   empleado: string;
+  imagenes: string[];
   // Otros campos de resultado
 }
 
@@ -40,7 +42,9 @@ export default function ListaCuestionarios() {
           const empleadoData = empleadosData.find(
             (empleado: any) => empleado._id === item.empleado_id
           );
-          const empleadoNombre = `${empleadoData?.name ?? ""} ${empleadoData?.lastname ?? ""}`;
+          const empleadoNombre = `${empleadoData?.name ?? ""} ${
+            empleadoData?.lastname ?? ""
+          }`;
 
           return {
             ...item,
@@ -58,7 +62,9 @@ export default function ListaCuestionarios() {
 
   async function fetchCuestionario(cuestionarioId: string | undefined) {
     try {
-      const response = await fetch(`${API_URL}/cuestionarios/${cuestionarioId}`);
+      const response = await fetch(
+        `${API_URL}/cuestionarios/${cuestionarioId}`
+      );
       if (response.ok) {
         const data = await response.json();
         setCuestionario(data.body.cuestionario);
@@ -94,8 +100,12 @@ export default function ListaCuestionarios() {
           <div className="col-12">
             <Card>
               <Card.Header>
-                <h2 className="text-center text-primary">Resultados del Cuestionario</h2>
-                <div className="text-center text-primary">{cuestionario?.titulo ?? ""}</div>
+                <h2 className="text-center text-primary">
+                  Resultados del Cuestionario
+                </h2>
+                <div className="text-center text-primary">
+                  {cuestionario?.titulo ?? ""}
+                </div>
               </Card.Header>
               <Card.Body>
                 {resultados.map((item: Resultado, index: number) => (
@@ -103,50 +113,95 @@ export default function ListaCuestionarios() {
                     <Accordion>
                       <Accordion.Item eventKey="0">
                         <Accordion.Header>
-                          <div className="me-3">Empleado: {item?.empleado ?? ""}</div>
+                          <div className="me-3">
+                            Empleado: {item?.empleado ?? ""}
+                          </div>
                         </Accordion.Header>
                         <Accordion.Body>
                           {item.respuestas && item.respuestas.length > 0 ? (
                             <ul>
-                              {item.respuestas.map((respuestasGrupo: any, respIndex: number) => (
-                                <div key={respIndex}>
-                                  {respuestasGrupo.map((respuesta: any, respuestaIndex: number) => {
-                                    if (preguntasMap[respuesta.pregunta_id].seccion !== ultimaSeccionImpresa) {
-                                      ultimaSeccionImpresa = preguntasMap[respuesta.pregunta_id].seccion;
-                                      return (
-                                        <div key={respuestaIndex}>
-                                          <p>
-                                            <h5 className="text-center p-2" style={{"background": "#cccccc"}}>
-                                              {preguntasMap[respuesta.pregunta_id].seccion}
-                                            </h5>{" "}
-                                          </p>
-                                          <p className="mb-0">
-                                            &bull; {preguntasMap[respuesta.pregunta_id].pregunta}
-                                          </p>
-                                          <p className="mx-2">
-                                            <strong>{respuesta.respuesta}</strong> 
-                                          </p>
-                                        </div>
-                                      );
-                                    } else {
-                                      return (
-                                        <div key={respuestaIndex}>
-                                          <p className="mb-0">
-                                            &bull; {preguntasMap[respuesta.pregunta_id].pregunta}
-                                          </p>
-                                          <p className="mx-2">
-                                            <strong>{respuesta.respuesta}</strong> 
-                                          </p>
-                                        </div>
-                                      );
-                                    }
-                                  })}
-                                </div>
-                              ))}
+                              {item.respuestas.map(
+                                (respuestasGrupo: any, respIndex: number) => (
+                                  <div key={respIndex}>
+                                    {respuestasGrupo.map(
+                                      (
+                                        respuesta: any,
+                                        respuestaIndex: number
+                                      ) => {
+                                        if (
+                                          preguntasMap[respuesta.pregunta_id]
+                                            .seccion !== ultimaSeccionImpresa
+                                        ) {
+                                          ultimaSeccionImpresa =
+                                            preguntasMap[respuesta.pregunta_id]
+                                              .seccion;
+                                          return (
+                                            <div key={respuestaIndex}>
+                                              <p>
+                                                <h5
+                                                  className="text-center p-2"
+                                                  style={{
+                                                    background: "#cccccc",
+                                                  }}
+                                                >
+                                                  {
+                                                    preguntasMap[
+                                                      respuesta.pregunta_id
+                                                    ].seccion
+                                                  }
+                                                </h5>{" "}
+                                              </p>
+                                              <p className="mb-0">
+                                                &bull;{" "}
+                                                {
+                                                  preguntasMap[
+                                                    respuesta.pregunta_id
+                                                  ].pregunta
+                                                }
+                                              </p>
+                                              <p className="mx-2">
+                                                <strong>
+                                                  {respuesta.respuesta}
+                                                </strong>
+                                              </p>
+                                            </div>
+                                          );
+                                        } else {
+                                          return (
+                                            <div key={respuestaIndex}>
+                                              <p className="mb-0">
+                                                &bull;{" "}
+                                                {
+                                                  preguntasMap[
+                                                    respuesta.pregunta_id
+                                                  ].pregunta
+                                                }
+                                              </p>
+                                              <p className="mx-2">
+                                                <strong>
+                                                  {respuesta.respuesta}
+                                                </strong>
+                                              </p>
+                                            </div>
+                                          );
+                                        }
+                                      }
+                                    )}
+                                  </div>
+                                )
+                              )}
                             </ul>
                           ) : (
                             <p>No hay respuestas para este empleado.</p>
                           )}
+                          {!item.imagenes || item.imagenes.length === 0
+                            ? null
+                            : item.imagenes.map((item: string) => (
+                                <div>
+                                  <img src={`/ia/${item}`} />
+                                  ../assets/ia/{item}
+                                </div>
+                              ))}
                         </Accordion.Body>
                       </Accordion.Item>
                     </Accordion>
