@@ -26,6 +26,40 @@ const listaExperiencia = [
   { name: "Meh", icon: "" },
   { name: "Mal", icon: "" },
 ];
+
+type Respuesta = { texto: string; img: string }[];
+
+const obtenerRespuesta = (key: string, respuestas: any): Respuesta | any => {
+  const map: { [key: string]: Respuesta | string } = {
+    "6543fb6ca4965491c3ae340e": [
+      { texto: "uno", img: "" },
+      { texto: "dos", img: "" },
+      { texto: "tres", img: "" },
+      { texto: "cuatro", img: "" },
+      { texto: "cinco", img: "" },
+    ],
+    "6543f73ca4976491c3ae340b": [],
+    "6543fafba4976491c3ae340e": [],
+    "6543fa41a4976491c3ae340d": [],
+  };
+
+  if (
+    map[key] !== undefined &&
+    Array.isArray(map[key]) &&
+    map[key].length > 0
+  ) {
+    const respuesta = map[key] as Respuesta;
+
+    const indiceAleatorio = Math.floor(Math.random() * respuesta.length);
+
+    return respuesta[indiceAleatorio];
+  } else if (map[key] === "") {
+    return "La clave no tiene una respuesta asociada";
+  } else {
+    return "No es una clave válida o no tiene un valor de tipo arreglo";
+  }
+};
+
 export default function ResponderCuestionario() {
   const { cuestionarioId, idempleado } = useParams();
   const [cuestionario, setCuestionario] = useState<Cuestionario | null>(null);
@@ -62,7 +96,9 @@ export default function ResponderCuestionario() {
     valor: string
   ) => {
     const newRespuestas: Respuestas = { ...respuestas };
+
     newRespuestas[seccionId] = newRespuestas[seccionId] || {};
+
     newRespuestas[seccionId][preguntaId] = valor;
     setRespuestas(newRespuestas);
   };
@@ -110,8 +146,65 @@ export default function ResponderCuestionario() {
   };
 
   const handleClose = () => setShow(!show);
+
+  const handlePermuta = () => {
+    const flattenObject = Object.values(respuestas).reduce(
+      (acc: any, nested: any) => {
+        return { ...acc, ...nested };
+      },
+      {}
+    );
+
+    let nuncaCount = 0;
+    let raraVezCount = 0;
+    let vecesCount = 0;
+    let frecuentementeCount = 0;
+    let siempreCount = 0;
+    // Recorremos el objeto
+    for (const key in flattenObject) {
+      if (flattenObject[key] === "Nunca") {
+        nuncaCount++;
+      } else if (flattenObject[key] === "Rara vez") {
+        raraVezCount++;
+      } else if (flattenObject[key] === "A veces") {
+        vecesCount++;
+      } else if (flattenObject[key] === "Frecuentemente") {
+        frecuentementeCount++;
+      } else if (flattenObject[key] === "Siempre") {
+        siempreCount++;
+      }
+    }
+
+    const result: any = {
+      Nunca: nuncaCount,
+      "Rara vez": raraVezCount,
+      "A veces": vecesCount,
+      Frecuentemente: frecuentementeCount,
+      Siempre: siempreCount,
+    };
+
+    if (result["Nunca"] >= 8) {
+      console.log("1");
+    } else if (result["Raramente"] >= 5) {
+      console.log("2");
+    } else if (result["A veces"] >= 1) {
+      console.log("3");
+    } else if (result["Frecuentemente"] >= 1) {
+      console.log("4");
+    } else if (result["Siempre"] >= 1) {
+      console.log("5");
+    }
+  };
   return (
     <PortalLayout>
+      <Button
+        className={`btn-sm px-2`}
+        onClick={() => {
+          handlePermuta();
+        }}
+      >
+        test
+      </Button>
       <Alert
         show={alert}
         variant="primary"
