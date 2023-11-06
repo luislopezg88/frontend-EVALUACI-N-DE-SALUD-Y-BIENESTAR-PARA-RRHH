@@ -95,10 +95,10 @@ export default function ListaCuestionarios() {
 
   return (
     <PortalLayout>
-      <div className="container mt-5">
+      <div className="container mt-5 mb-5">
         <div className="row justify-content-center">
           <div className="col-12">
-            <Card>
+            <Card className="mb-5">
               <Card.Header>
                 <h2 className="text-center text-primary">
                   Resultados del Cuestionario
@@ -110,7 +110,7 @@ export default function ListaCuestionarios() {
               <Card.Body>
                 {resultados.map((item: Resultado, index: number) => (
                   <div key={index} className="mb-3">
-                    <Accordion>
+                    <Accordion className="px-2">
                       <Accordion.Item eventKey="0">
                         <Accordion.Header>
                           <div className="me-3">
@@ -194,14 +194,13 @@ export default function ListaCuestionarios() {
                           ) : (
                             <p>No hay respuestas para este empleado.</p>
                           )}
-                          {!item.imagenes || item.imagenes.length === 0
-                            ? null
-                            : item.imagenes.map((item: string) => (
-                                <div>
-                                  <img src={`/ia/${item}`} />
-                                  ../assets/ia/{item}
-                                </div>
+                          <div className="d-flex justify-content-center flex-wrap">
+                            {!item.imagenes || item.imagenes.length === 0
+                              ? null
+                              : item.imagenes.map((item: string) => (
+                                 <img src={`/ia/${item}`} className="img-fluid px-2 py-2 w-100 w-md-50 rounded-ia"/>
                               ))}
+                          </div>
                         </Accordion.Body>
                       </Accordion.Item>
                     </Accordion>
