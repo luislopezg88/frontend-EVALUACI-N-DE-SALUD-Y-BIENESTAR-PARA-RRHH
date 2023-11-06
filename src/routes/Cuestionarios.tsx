@@ -79,7 +79,7 @@ export default function ListaCuestionarios() {
                                 className="d-flex justify-content-end mb-3"
                               >
                                 <button className="btn btn-primary btn-sm px-2">
-                                  ver encuestas
+                                  Ver encuestas
                                 </button>
                               </Link>
                             )}

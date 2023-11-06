@@ -193,6 +193,60 @@ export default function ResponderCuestionario() {
         "satisfecho-con-el-trabajo.jpg",
         "satisfecho-con-el-trabajo-1.jpg"
       ]);
+    } else if (result["Siempre"] >= 8) {
+      setImagenes([
+        "quemado.jpg",
+        "quemado-1.jpg",
+        "quemado-2.jpg",
+        "quemado-3.jpg"
+      ]);
+    } else if (result["Siempre"] >= 6) {
+      setImagenes([
+        "insatisfecho.jpg",
+        "insatisfecho-1.jpg",
+        "estresado-1.jpg"
+      ]);
+    } else if (result["Siempre"] >= 5) {
+      setImagenes([
+        "agotado-2.jpg",
+        "estresado.jpg"
+      ]);
+    } else if (result["Frecuentemente"] >= 8) {
+      setImagenes([
+        "insatisfecho.jpg",
+        "insatisfecho-1.jpg",
+        "mala-relacion-laboral-1.jpg"
+      ]);
+    } else if (result["Frecuentemente"] >= 7) {
+      setImagenes([
+        "agotado.jpg",
+        "agotado-1.jpg",
+        "agotado-2.jpg"
+      ]);
+    } else if (result["Frecuentemente"] >= 6) {
+      setImagenes([
+        "confundido.jpg",
+        "confundido-1.jpg"
+      ]);
+    } else if (result["Frecuentemente"] >= 5) {
+      setImagenes([
+        "cansado-1.jpg",
+      ]);
+    } else if (result["A veces"] >= 8) {
+      setImagenes([
+        "neutral.jpg",
+        "neutral-1.jpg",
+        "neutral-2.jpg"
+      ]);
+    } else if (result["A veces"] >= 7) {
+      setImagenes([
+        "cansado.jpg",
+        "cansado-2.jpg"
+      ]);
+    } else if (result["A veces"] >= 6) {
+      setImagenes([
+        "indiferente.jpg"
+      ]);
     } else if (result["Raramente"] >= 8) {
       setImagenes([
         "buena-relacion-laboral.jpg",
@@ -203,61 +257,7 @@ export default function ResponderCuestionario() {
         "neutral.jpg",
         "cansado.jpg"
       ]);
-    } else if (result["A veces"] >= 8) {
-      setImagenes([
-        "neutral.jpg",
-        "neutral-1.jpg",
-        "neutral-2.jpg"
-      ]);
-    } else if (result["A veces"] >= 5) {
-      setImagenes([
-        "cansado.jpg",
-        "cansado-2.jpg"
-      ]);
-    } else if (result["A veces"] >= 3) {
-      setImagenes([
-        "indiferente.jpg"
-      ]);
-    } else if (result["Frecuentemente"] >= 8) {
-      setImagenes([
-        "insatisfecho.jpg",
-        "insatisfecho-1.jpg",
-        "mala-relacion-laboral-1.jpg"
-      ]);
-    } else if (result["Frecuentemente"] >= 5) {
-      setImagenes([
-        "agotado.jpg",
-        "agotado-1.jpg",
-        "agotado-2.jpg"
-      ]);
-    } else if (result["Frecuentemente"] >= 4) {
-      setImagenes([
-        "confundido.jpg",
-        "confundido-1.jpg"
-      ]);
-    } else if (result["Frecuentemente"] >= 2) {
-      setImagenes([
-        "cansado-1.jpg",
-      ]);
-    } else if (result["Siempre"] >= 8) {
-      setImagenes([
-        "quemado.jpg",
-        "quemado-1.jpg",
-        "quemado-2.jpg",
-        "quemado-3.jpg"
-      ]);
-    }else if (result["Siempre"] >= 5) {
-      setImagenes([
-        "insatisfecho.jpg",
-        "insatisfecho-1.jpg",
-        "estresado-1.jpg"
-      ]);
-    }else if (result["Siempre"] >= 4) {
-      setImagenes([
-        "agotado-2.jpg",
-        "estresado.jpg"
-      ]);
-    }else{
+    } else{
       setImagenes([
         "neutral-1.jpg",
         "indiferente.jpg",
