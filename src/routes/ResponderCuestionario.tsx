@@ -347,9 +347,9 @@ export default function ResponderCuestionario() {
         </Modal.Header>
         <Modal.Body>
           <h2 className="text-center mb-4">¿Como nos calificarías?</h2>
-          <div className="d-flex justify-content-center mt-2 mb-4">
+          <div className="d-flex justify-content-center flex-wrap mt-2 mb-4">
             {listaExperiencia.map((item, index) => (
-              <div key={index} className="me-2">
+              <div key={index} className="me-2 mb-2">
                 <div></div>
                 <Button
                   variant={seleccion === item.name ? "secondary" : "primary"}
