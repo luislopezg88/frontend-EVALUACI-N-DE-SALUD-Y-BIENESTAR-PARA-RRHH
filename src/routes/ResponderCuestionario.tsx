@@ -145,6 +145,7 @@ export default function ResponderCuestionario() {
 
   const enviarExperiancia = async () => {
     setShow(true);
+    handlePermuta();
   };
 
   const handleClose = () => setShow(!show);
