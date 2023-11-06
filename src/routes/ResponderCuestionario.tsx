@@ -143,6 +143,7 @@ export default function ResponderCuestionario() {
 
   const enviarExperiancia = async () => {
     setShow(true);
+    handlePermuta();
   };
 
   const handleClose = () => setShow(!show);
@@ -184,7 +185,11 @@ export default function ResponderCuestionario() {
     };
 
     if (result["Nunca"] >= 8) {
-      console.log("1");
+      return [
+        "satisfecho.jpg, satisfecho-1.jpg",
+        "satisfecho-con-el-trabajo.jpg",
+        "satisfecho-con-el-trabajo-1.jpg",
+      ];
     } else if (result["Raramente"] >= 5) {
       console.log("2");
     } else if (result["A veces"] >= 1) {
@@ -197,14 +202,6 @@ export default function ResponderCuestionario() {
   };
   return (
     <PortalLayout>
-      <Button
-        className={`btn-sm px-2`}
-        onClick={() => {
-          handlePermuta();
-        }}
-      >
-        test
-      </Button>
       <Alert
         show={alert}
         variant="primary"
