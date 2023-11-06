@@ -69,6 +69,7 @@ export default function ResponderCuestionario() {
   const [seleccion, setSeleccion] = useState("");
   const [texto, setTexto] = useState("");
   const [alert, setAlert] = useState(false);
+  const [imagenes, setImagenes] = useState<any>([]);
 
   useEffect(() => {
     async function fetchCuestionario() {
@@ -111,6 +112,7 @@ export default function ResponderCuestionario() {
         empleado_id: idempleado,
         seleccion_satifaccion: seleccion,
         texto_satifaccion: texto,
+        imagenes: imagenes,
         // Estructura de respuestas (conversión de respuestas)
         respuestas: Object.keys(respuestas).map((seccionId) => {
           return Object.keys(respuestas[seccionId]).map((preguntaId) => {
@@ -184,15 +186,47 @@ export default function ResponderCuestionario() {
     };
 
     if (result["Nunca"] >= 8) {
-      console.log("1");
+      setImagenes([
+        "satisfecho.jpg,",
+        "satisfecho-1.jpg",
+        "satisfecho-con-el-trabajo.jpg",
+        "satisfecho-con-el-trabajo-1.jpg",
+      ]);
     } else if (result["Raramente"] >= 5) {
-      console.log("2");
+      setImagenes([
+        "satisfecho.jpg,",
+        "satisfecho-1.jpg",
+        "satisfecho-con-el-trabajo.jpg",
+        "satisfecho-con-el-trabajo-1.jpg",
+      ]);
     } else if (result["A veces"] >= 1) {
-      console.log("3");
+      setImagenes([
+        "satisfecho.jpg,",
+        "satisfecho-1.jpg",
+        "satisfecho-con-el-trabajo.jpg",
+        "satisfecho-con-el-trabajo-1.jpg",
+      ]);
     } else if (result["Frecuentemente"] >= 1) {
-      console.log("4");
+      setImagenes([
+        "satisfecho.jpg,",
+        "satisfecho-1.jpg",
+        "satisfecho-con-el-trabajo.jpg",
+        "satisfecho-con-el-trabajo-1.jpg",
+      ]);
     } else if (result["Siempre"] >= 1) {
-      console.log("5");
+      setImagenes([
+        "satisfecho.jpg,",
+        "satisfecho-1.jpg",
+        "satisfecho-con-el-trabajo.jpg",
+        "satisfecho-con-el-trabajo-1.jpg",
+      ]);
+    }else{
+      setImagenes([
+        "satisfecho.jpg,",
+        "satisfecho-1.jpg",
+        "satisfecho-con-el-trabajo.jpg",
+        "satisfecho-con-el-trabajo-1.jpg",
+      ]);
     }
   };
   return (
