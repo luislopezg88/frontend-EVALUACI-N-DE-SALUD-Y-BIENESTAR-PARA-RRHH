@@ -22,7 +22,7 @@ export default function Signup() {
   const auth = useAuth();
   const goTo = useNavigate();
 
-  const orderPlaces = puestos.sort((a, b) => a - b);
+  const orderPlaces = puestos.sort((a: any, b: any) => a - b);
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
