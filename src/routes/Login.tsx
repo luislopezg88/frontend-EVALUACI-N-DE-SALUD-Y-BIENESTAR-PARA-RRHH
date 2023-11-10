@@ -10,11 +10,6 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorResponse, setErrorResponse] = useState("");
-  const [activeTab, setActiveTab] = useState('specialist');
-
-  const handleTabChange = (tab: string) => {
-    setActiveTab(tab);
-  };
 
   const auth = useAuth();
 
@@ -63,27 +58,10 @@ export default function Login() {
         <div className="col-12 col-md-6 col-lg-4">
           <Card>
             <Card.Header>
-              <ul className="nav nav-tabs card-header-tabs">
-                <li className="nav-item">
-                  <button
-                    className={`nav-link ${activeTab === 'specialist' ? 'active bg-dark text-light' : ''}`}
-                    onClick={() => handleTabChange('specialist')}
-                  >
-                    Especialista
-                  </button>
-                </li>
-                <li className="nav-item">
-                  <button
-                    className={`nav-link ${activeTab === 'employee' ? 'active bg-dark text-light' : ''}`}
-                    onClick={() => handleTabChange('employee')}
-                  >
-                    Empleado
-                  </button>
-                </li>
-              </ul>
+             <h2 className="card-title text-center text-primary mb-4">Log in</h2>
             </Card.Header>
             <Card.Body>
-              <h2 className="card-title text-center text-primary mb-4">Log in</h2>
+              
               {!!errorResponse && <div className="alert alert-danger">{errorResponse}</div>}
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
@@ -112,7 +90,7 @@ export default function Login() {
               </form>
             </Card.Body>
             <Card.Footer className="text-center">
-              <p>¿No tienes una cuenta? <Link to={`signup?type=${activeTab}`}>Sign Up</Link></p>
+              <p>¿No tienes una cuenta? <Link to={`signup`}>Sign Up</Link></p>
             </Card.Footer>
           </Card>
         </div>

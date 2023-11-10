@@ -5,7 +5,7 @@ import { Navigate, useNavigate, Link } from "react-router-dom";
 import { AuthResponse, AuthResponseError } from "../types/types";
 import { API_URL } from "../auth/authConstants";
 import Card from 'react-bootstrap/Card';
-import  { useQuery } from '../hooks/useQuery';
+import { puestos } from "../moks/puestos";
 
 export default function Signup() {
   
@@ -17,10 +17,16 @@ export default function Signup() {
   const [sexo, setSexo] = useState("");
   const [puestoTrabajo, setPuestoTrabajo] = useState("");
   const [errorResponse, setErrorResponse] = useState("");
+  const [activeTab, setActiveTab] = useState('specialist');
 
   const auth = useAuth();
   const goTo = useNavigate();
-  const query = useQuery();
+
+  const orderPlaces = puestos.sort((a, b) => a - b);
+
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+  };
 
   async function handleSubmit(e: React.ChangeEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -29,7 +35,7 @@ export default function Signup() {
       const response = await fetch(`${API_URL}/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, username, name, password, edad, sexo, puestoTrabajo, tipo: query.get("type") ? query.get("type") : 'employee' })
+        body: JSON.stringify({ email, username, name, password, edad, sexo, puestoTrabajo, tipo: activeTab })
       });
       if (response.ok) {
         const json = (await response.json()) as AuthResponse;
@@ -66,6 +72,25 @@ export default function Signup() {
               <h2 className="text-center text-primary">Sign in</h2>
             </Card.Header>
             <Card.Body>
+              <ul className="nav nav-tabs card-header-tabs mb-3 justify-content-center">
+                <li className="nav-item">
+                  <button
+                    className={`nav-link ${activeTab === 'specialist' ? 'active bg-dark text-light' : ''}`}
+                    onClick={() => handleTabChange('specialist')}
+                  >
+                    Especialista
+                  </button>
+                </li>
+                <li className="nav-item">
+                  <button
+                    className={`nav-link ${activeTab === 'employee' ? 'active bg-dark text-light' : ''}`}
+                    onClick={() => handleTabChange('employee')}
+                  >
+                    Empleado
+                  </button>
+                </li>
+              </ul>
+
               <form onSubmit={handleSubmit} >
                 {!!errorResponse && <div className="alert alert-danger">{errorResponse}</div>}
                 <div className="form-group">
@@ -114,7 +139,7 @@ export default function Signup() {
                 <div className="form-group">
                   <select
                     name="sexo"
-                    className="form-select"
+                    className="form-select form-select-lg mb-3"
                     placeholder="Seleccionar Sexo"
                     onChange={(e) => setSexo(e.target.value)}
                     value={sexo}
@@ -126,14 +151,17 @@ export default function Signup() {
                   </select>
                 </div>
                 <div className="form-group">
-                  <input
-                    type="text"
+                  <select
                     name="puestoTrabajo"
-                    className="form-control"
-                    placeholder="Puesto de Trabajo"
+                    className="form-select form-select-lg mb-3"
+                    placeholder="Seleccionar Sexo"
                     onChange={(e) => setPuestoTrabajo(e.target.value)}
                     value={puestoTrabajo}
-                  />
+                  >
+                    {orderPlaces.map((p: any, i: number) => (
+                      <option value={p} key={p + '-' + i} >{p}</option>
+                    ))}
+                  </select>
                 </div>
                 <div className="text-center">
                   <button type="submit" className="btn btn-primary btn-block">Sign Up</button>

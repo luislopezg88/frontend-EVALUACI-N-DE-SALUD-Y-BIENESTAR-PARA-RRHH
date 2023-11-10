@@ -4,6 +4,7 @@ import PortalLayout from "../layout/PortalLayout";
 import { API_URL } from "../auth/authConstants";
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
+import { useAuth } from "../auth/AuthProvider";
 
 interface Cuestionario {
   _id: string;
@@ -15,7 +16,8 @@ export default function ListaCuestionarios() {
   const { idempleado } = useParams();
   const [cuestionarios, setCuestionarios] = useState<Cuestionario[]>([]);
   const [error, setError] = useState<string>("");
-
+  const auth = useAuth();
+ 
   useEffect(() => {
     async function fetchCuestionarios() {
       try {
@@ -63,7 +65,8 @@ export default function ListaCuestionarios() {
                           </Card.Header>
                           <Card.Body>
                             <p>{cuestionario.instrucciones}</p>
-                            {idempleado === "0000" ? null : (
+                            
+                            {auth.getUser()?.tipo === 'employee' && (
                               <Link
                                 to={`/responder/${cuestionario._id}/${idempleado}`}
                                 className="d-flex justify-content-end mb-3"
@@ -73,7 +76,7 @@ export default function ListaCuestionarios() {
                                 </button>
                               </Link>
                             )}
-                            {idempleado !== "0000" ? null : (
+                            {auth.getUser()?.tipo === 'specialist' && (
                               <Link
                                 to={`/cuestionarios-resultados/${cuestionario._id}`}
                                 className="d-flex justify-content-end mb-3"
