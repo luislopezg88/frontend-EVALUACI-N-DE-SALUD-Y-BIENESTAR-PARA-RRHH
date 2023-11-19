@@ -4,7 +4,6 @@ import PortalLayout from "../layout/PortalLayout";
 import { API_URL } from "../auth/authConstants";
 import Card from "react-bootstrap/Card";
 import { Accordion } from "react-bootstrap";
-import img from "../assets/ia/agotado-1.jpg";
 
 interface Cuestionario {
   _id: string;
@@ -55,7 +54,7 @@ export default function ListaCuestionarios() {
       } else {
         setError("Error al cargar los resultados");
       }
-    } catch (error) {
+    } catch (err) {
       setError("Error al cargar los resultados");
     }
   }
@@ -84,8 +83,9 @@ export default function ListaCuestionarios() {
       } else {
         setError("Error al cargar la lista de cuestionarios");
       }
-    } catch (error) {
+    } catch (err) {
       setError("Error de red");
+      console.log(error);
     }
   }
 

@@ -67,6 +67,11 @@ export default function PortalLayout({ children }: PortalLayoutProps) {
                 </Link>
               </li>
               <li>
+                <Link to="/cuestionarios/0000" title="encuesta">
+                  <FontAwesomeIcon icon={faPen} />
+                </Link>
+              </li>
+              <li>
                 <a href="#" onClick={handleSignOut} title="Salir">
                   <FontAwesomeIcon icon={faPowerOff} />
                 </a>

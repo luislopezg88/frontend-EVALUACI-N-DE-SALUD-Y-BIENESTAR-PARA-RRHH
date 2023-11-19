@@ -27,9 +27,9 @@ const listaExperiencia = [
   { name: "Mal", icon: "" },
 ];
 
-type Respuesta = { texto: string; img: string }[];
+//type Respuesta = { texto: string; img: string }[];
 
-const obtenerRespuesta = (key: string, respuestas: any): Respuesta | any => {
+/*const obtenerRespuesta = (key: string, respuestas: any): Respuesta | any => {
   const map: { [key: string]: Respuesta | string } = {
     "6543fb6ca4965491c3ae340e": [
       { texto: "uno", img: "" },
@@ -58,7 +58,7 @@ const obtenerRespuesta = (key: string, respuestas: any): Respuesta | any => {
   } else {
     return "No es una clave válida o no tiene un valor de tipo arreglo";
   }
-};
+};*/
 
 export default function ResponderCuestionario() {
   const { cuestionarioId, idempleado } = useParams();
