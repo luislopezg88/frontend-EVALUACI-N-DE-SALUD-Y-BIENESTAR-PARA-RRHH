@@ -16,6 +16,7 @@ import CreateTaks from "./routes/CreateTaks.tsx";
 import Cuestionarios from "./routes/Cuestionarios.tsx";
 import ResponderCuestionario from "./routes/ResponderCuestionario";
 import ResultadosCuestionario from "./routes/ResultadosCuestionario.tsx";
+import ResultImages from "./routes/ResultImages.tsx";
 
 import "./index.css";
 
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
       {
         path: "/savetaks",
         element: <CreateTaks />,
+      },
+      {
+        path: "/result-image",
+        element: <ResultImages />,
       },
     ],
   },

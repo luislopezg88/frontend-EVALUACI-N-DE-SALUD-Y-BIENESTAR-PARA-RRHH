@@ -5,7 +5,9 @@ import { API_URL } from "../auth/authConstants";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import { Button, Modal } from "react-bootstrap";
-import Alert from "react-bootstrap/Alert";
+//import Alert from "react-bootstrap/Alert";
+import Toast from 'react-bootstrap/Toast';
+import ToastContainer from 'react-bootstrap/ToastContainer';
 
 interface Cuestionario {
   _id: string;
@@ -62,14 +64,23 @@ const listaExperiencia = [
 
 export default function ResponderCuestionario() {
   const { cuestionarioId, idempleado } = useParams();
+
+  console.log(idempleado)
   const [cuestionario, setCuestionario] = useState<Cuestionario | null>(null);
   const [respuestas, setRespuestas] = useState<Respuestas>({});
   const [error, setError] = useState("");
   const [show, setShow] = useState(false);
   const [seleccion, setSeleccion] = useState("");
   const [texto, setTexto] = useState("");
-  const [alert, setAlert] = useState(false);
+  //const [alert, setAlert] = useState(false);
   const [imagenes, setImagenes] = useState<any>([]);
+
+  const [toatsData, setToatsData] = useState({
+    show: false,
+    title: '',
+    message: '',
+    bg: 'Success'
+  });
 
   useEffect(() => {
     async function fetchCuestionario() {
@@ -134,12 +145,15 @@ export default function ResponderCuestionario() {
 
       if (response.ok) {
         setShow(false);
-        setAlert(true);
+        //setAlert(true);
+        setToatsData({ show: true, title: 'Éxito', message: 'Cuestionario guardado existosamente', bg: 'Success' });
       } else {
+        setToatsData({ show: true, title: 'Atención', message: 'Error al guardar respuestas', bg: 'Danger' });
         setError("Error al guardar respuestas.");
       }
     } catch (error) {
       setError("Error de red");
+      setToatsData({ show: true, title: 'Atención', message: 'Error de red', bg: 'Danger' });
     }
   };
 
@@ -188,21 +202,21 @@ export default function ResponderCuestionario() {
 
     if (result["Nunca"] >= 8) {
       setImagenes([
-        "satisfecho.jpg",
+        "satisfecho-360.jpeg",
         "satisfecho-1.jpg",
         "satisfecho-con-el-trabajo.jpg",
         "satisfecho-con-el-trabajo-1.jpg",
       ]);
     } else if (result["Siempre"] >= 8) {
       setImagenes([
-        "quemado.jpg",
+        "quemado-360.jpg",
         "quemado-1.jpg",
         "quemado-2.jpg",
         "quemado-3.jpg",
       ]);
     } else if (result["Frecuentemente"] >= 8) {
       setImagenes([
-        "insatisfecho.jpg",
+        "insatisfecho-360.jpeg",
         "insatisfecho-1.jpg",
         "mala-relacion-laboral-1.jpg",
       ]);
@@ -210,36 +224,36 @@ export default function ResponderCuestionario() {
       setImagenes(["neutral.jpg", "neutral-1.jpg", "neutral-2.jpg"]);
     } else if (result["Raramente"] >= 8) {
       setImagenes([
-        "buena-relacion-laboral.jpg",
+        "buena-relacion-360.jpeg",
         "buena-relacion-laboral-1.jpg",
       ]);
     } else if (result["Frecuentemente"] >= 7) {
-      setImagenes(["agotado.jpg", "agotado-1.jpg", "agotado-2.jpg"]);
+      setImagenes(["agotado-360.jpeg", "agotado-1.jpg", "agotado-2.jpg"]);
     } else if (result["A veces"] >= 7) {
-      setImagenes(["cansado.jpg", "cansado-2.jpg"]);
+      setImagenes(["agotado-360.jpeg", "cansado-2.jpg"]);
     } else if (result["Siempre"] >= 6) {
       setImagenes([
-        "insatisfecho.jpg",
+        "insatisfecho-360.jpeg",
         "insatisfecho-1.jpg",
         "estresado-1.jpg",
       ]);
     } else if (result["Frecuentemente"] >= 6) {
-      setImagenes(["confundido.jpg", "confundido-1.jpg"]);
+      setImagenes(["confundido-360.jpg", "confundido-1.jpg"]);
     } else if (result["A veces"] >= 6) {
-      setImagenes(["indiferente.jpg"]);
+      setImagenes(["buena-relacion-360"]);
     } else if (result["Siempre"] >= 5) {
       setImagenes(["agotado-2.jpg", "estresado.jpg"]);
     } else if (result["Frecuentemente"] >= 5) {
-      setImagenes(["cansado-1.jpg"]);
+      setImagenes(["agotado-360.jpeg"]);
     } else if (result["Raramente"] >= 5) {
-      setImagenes(["neutral.jpg", "cansado.jpg"]);
+      setImagenes(["buena-relacion-360.jpeg", "cansado.jpg"]);
     } else {
-      setImagenes(["neutral-1.jpg", "indiferente.jpg", "cansado.jpg"]);
+      setImagenes(["buena-relacion-360.jpeg", "indiferente.jpg", "cansado.jpg"]);
     }
   };
   return (
     <PortalLayout>
-      <Alert
+      {/*<Alert
         show={alert}
         variant="primary"
         onClose={() => setAlert(false)}
@@ -247,7 +261,7 @@ export default function ResponderCuestionario() {
       >
         <Alert.Heading>Completado!</Alert.Heading>
         <p>Cuestionario guardado existosamente .</p>
-      </Alert>
+      </Alert>*/}
       <div className="container mt-5 mb-5">
         {cuestionario ? (
           <Card className="mb-5">
@@ -350,6 +364,25 @@ export default function ResponderCuestionario() {
           </Button>
         </Modal.Footer>
       </Modal>
+        <ToastContainer
+            className="p-3"
+            position={'bottom-end'}
+            style={{ zIndex: 1 }}
+          >
+            <Toast 
+              bg={toatsData.bg}
+              onClose={() => setToatsData({ show: false, title: '', message: '', bg: 'Success' })} show={toatsData.show} delay={3000} autohide>
+              <Toast.Header> 
+                <img
+                  src="holder.js/20x20?text=%20"
+                  className="rounded me-2"
+                  alt=""
+                />
+                <strong className="me-auto">{toatsData.title}</strong>
+              </Toast.Header>
+              <Toast.Body>{toatsData.message}</Toast.Body>
+            </Toast>
+        </ToastContainer>
     </PortalLayout>
   );
 }

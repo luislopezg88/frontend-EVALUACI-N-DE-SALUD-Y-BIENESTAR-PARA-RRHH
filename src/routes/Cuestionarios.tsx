@@ -13,10 +13,11 @@ interface Cuestionario {
 }
 
 export default function ListaCuestionarios() {
-  const { idempleado } = useParams();
+  //const { idempleado } = useParams();
   const [cuestionarios, setCuestionarios] = useState<Cuestionario[]>([]);
   const [error, setError] = useState<string>("");
   const auth = useAuth();
+
  
   useEffect(() => {
     async function fetchCuestionarios() {
@@ -68,7 +69,7 @@ export default function ListaCuestionarios() {
                             
                             {auth.getUser()?.tipo === 'employee' && (
                               <Link
-                                to={`/responder/${cuestionario._id}/${idempleado}`}
+                                to={`/responder/${cuestionario._id}/${auth.getUser()?.id}`}
                                 className="d-flex justify-content-end mb-3"
                               >
                                 <button className="btn btn-primary btn-sm px-2">

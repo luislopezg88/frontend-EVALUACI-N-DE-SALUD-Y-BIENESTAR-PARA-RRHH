@@ -4,6 +4,9 @@ import PortalLayout from "../layout/PortalLayout";
 import { API_URL } from "../auth/authConstants";
 import Card from "react-bootstrap/Card";
 import { Accordion } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGlasses } from "@fortawesome/free-solid-svg-icons";
 
 interface Cuestionario {
   _id: string;
@@ -87,6 +90,10 @@ export default function ListaCuestionarios() {
       setError("Error de red");
       console.log(error);
     }
+  }
+
+  const getUrlImagen = (arreglo: any[]) => {
+    return "/result-image?img=" + arreglo[0]
   }
 
   useEffect(() => {
@@ -195,11 +202,17 @@ export default function ListaCuestionarios() {
                             <p>No hay respuestas para este empleado.</p>
                           )}
                           <div className="d-flex justify-content-center flex-wrap">
-                            {!item.imagenes || item.imagenes.length === 0
+                            {/*!item.imagenes || item.imagenes.length === 0
                               ? null
                               : item.imagenes.map((item: string) => (
                                  <img src={`/ia/${item}`} className="img-fluid px-2 py-2 w-100 w-md-50 rounded-ia"/>
-                              ))}
+                            ))*/}
+                            <Link to={getUrlImagen(item.imagenes)} title="result">
+                              <button>
+                                ver con <FontAwesomeIcon icon={faGlasses} />
+                              </button>
+                            </Link>
+                            
                           </div>
                         </Accordion.Body>
                       </Accordion.Item>
