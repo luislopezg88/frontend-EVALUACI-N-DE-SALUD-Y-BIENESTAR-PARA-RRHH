@@ -201,54 +201,33 @@ export default function ResponderCuestionario() {
     };
 
     if (result["Nunca"] >= 8) {
-      setImagenes([
-        "satisfecho-360.jpeg",
-        "satisfecho-1.jpg",
-        "satisfecho-con-el-trabajo.jpg",
-        "satisfecho-con-el-trabajo-1.jpg",
-      ]);
+      setImagenes(["satisfecho-360.jpeg"]);
     } else if (result["Siempre"] >= 8) {
-      setImagenes([
-        "quemado-360.jpg",
-        "quemado-1.jpg",
-        "quemado-2.jpg",
-        "quemado-3.jpg",
-      ]);
+      setImagenes(["quemado-1.jpg"]);
     } else if (result["Frecuentemente"] >= 8) {
-      setImagenes([
-        "insatisfecho-360.jpeg",
-        "insatisfecho-1.jpg",
-        "mala-relacion-laboral-1.jpg",
-      ]);
+      setImagenes(["insatisfecho-360.jpeg"]);
     } else if (result["A veces"] >= 8) {
-      setImagenes(["neutral.jpg", "neutral-1.jpg", "neutral-2.jpg"]);
+      setImagenes(["buena-relacion-360.jpeg"]);
     } else if (result["Raramente"] >= 8) {
-      setImagenes([
-        "buena-relacion-360.jpeg",
-        "buena-relacion-laboral-1.jpg",
-      ]);
+      setImagenes(["buena-relacion-360.jpeg"]);
     } else if (result["Frecuentemente"] >= 7) {
-      setImagenes(["agotado-360.jpeg", "agotado-1.jpg", "agotado-2.jpg"]);
+      setImagenes(["agotado-360.jpeg"]);
     } else if (result["A veces"] >= 7) {
-      setImagenes(["agotado-360.jpeg", "cansado-2.jpg"]);
+      setImagenes(["agotado-360.jpeg"]);
     } else if (result["Siempre"] >= 6) {
-      setImagenes([
-        "insatisfecho-360.jpeg",
-        "insatisfecho-1.jpg",
-        "estresado-1.jpg",
-      ]);
+      setImagenes(["insatisfecho-360.jpeg"]);
     } else if (result["Frecuentemente"] >= 6) {
-      setImagenes(["confundido-360.jpg", "confundido-1.jpg"]);
+      setImagenes(["insatisfecho-360.jpeg"]);
     } else if (result["A veces"] >= 6) {
-      setImagenes(["buena-relacion-360"]);
+      setImagenes(["buena-relacion-360.jpeg"]);
     } else if (result["Siempre"] >= 5) {
-      setImagenes(["agotado-2.jpg", "estresado.jpg"]);
+      setImagenes(["quemado-360.jpg"]);
     } else if (result["Frecuentemente"] >= 5) {
       setImagenes(["agotado-360.jpeg"]);
     } else if (result["Raramente"] >= 5) {
-      setImagenes(["buena-relacion-360.jpeg", "cansado.jpg"]);
+      setImagenes(["buena-relacion-360.jpeg"]);
     } else {
-      setImagenes(["buena-relacion-360.jpeg", "indiferente.jpg", "cansado.jpg"]);
+      setImagenes(["agotado-360.jpeg"]);
     }
   };
   return (
