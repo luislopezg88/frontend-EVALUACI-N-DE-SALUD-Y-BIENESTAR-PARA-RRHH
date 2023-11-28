@@ -5,9 +5,7 @@ import { API_URL } from "../auth/authConstants";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import { Button, Modal } from "react-bootstrap";
-//import Alert from "react-bootstrap/Alert";
-import Toast from 'react-bootstrap/Toast';
-import ToastContainer from 'react-bootstrap/ToastContainer';
+import Alert from "react-bootstrap/Alert";
 
 interface Cuestionario {
   _id: string;
@@ -72,15 +70,8 @@ export default function ResponderCuestionario() {
   const [show, setShow] = useState(false);
   const [seleccion, setSeleccion] = useState("");
   const [texto, setTexto] = useState("");
-  //const [alert, setAlert] = useState(false);
+  const [alert, setAlert] = useState(false);
   const [imagenes, setImagenes] = useState<any>([]);
-
-  const [toatsData, setToatsData] = useState({
-    show: false,
-    title: '',
-    message: '',
-    bg: 'Success'
-  });
 
   useEffect(() => {
     async function fetchCuestionario() {
@@ -145,15 +136,12 @@ export default function ResponderCuestionario() {
 
       if (response.ok) {
         setShow(false);
-        //setAlert(true);
-        setToatsData({ show: true, title: 'Éxito', message: 'Cuestionario guardado existosamente', bg: 'Success' });
+        setAlert(true);
       } else {
-        setToatsData({ show: true, title: 'Atención', message: 'Error al guardar respuestas', bg: 'Danger' });
         setError("Error al guardar respuestas.");
       }
     } catch (error) {
       setError("Error de red");
-      setToatsData({ show: true, title: 'Atención', message: 'Error de red', bg: 'Danger' });
     }
   };
 
@@ -203,7 +191,7 @@ export default function ResponderCuestionario() {
     if (result["Nunca"] >= 8) {
       setImagenes(["satisfecho-360.jpeg"]);
     } else if (result["Siempre"] >= 8) {
-      setImagenes(["quemado-1.jpg"]);
+      setImagenes(["quemado-360.jpg"]);
     } else if (result["Frecuentemente"] >= 8) {
       setImagenes(["insatisfecho-360.jpeg"]);
     } else if (result["A veces"] >= 8) {
@@ -232,15 +220,6 @@ export default function ResponderCuestionario() {
   };
   return (
     <PortalLayout>
-      {/*<Alert
-        show={alert}
-        variant="primary"
-        onClose={() => setAlert(false)}
-        dismissible
-      >
-        <Alert.Heading>Completado!</Alert.Heading>
-        <p>Cuestionario guardado existosamente .</p>
-      </Alert>*/}
       <div className="container mt-5 mb-5">
         {cuestionario ? (
           <Card className="mb-5">
@@ -290,6 +269,20 @@ export default function ResponderCuestionario() {
                     Finalizar
                   </button>
                 </div>
+
+                <div className="w-100 d-flex mt-3">
+                  <Alert
+                    show={alert}
+                    variant="success"
+                    onClose={() => setAlert(false)}
+                    dismissible
+                  >
+                    <Alert.Heading>Completado!</Alert.Heading>
+                    <p>Cuestionario guardado existosamente .</p>
+                  </Alert>         
+                </div>           
+
+
               </Form>
             </Card.Body>
           </Card>
@@ -343,25 +336,6 @@ export default function ResponderCuestionario() {
           </Button>
         </Modal.Footer>
       </Modal>
-        <ToastContainer
-            className="p-3"
-            position={'bottom-end'}
-            style={{ zIndex: 1 }}
-          >
-            <Toast 
-              bg={toatsData.bg}
-              onClose={() => setToatsData({ show: false, title: '', message: '', bg: 'Success' })} show={toatsData.show} delay={3000} autohide>
-              <Toast.Header> 
-                <img
-                  src="holder.js/20x20?text=%20"
-                  className="rounded me-2"
-                  alt=""
-                />
-                <strong className="me-auto">{toatsData.title}</strong>
-              </Toast.Header>
-              <Toast.Body>{toatsData.message}</Toast.Body>
-            </Toast>
-        </ToastContainer>
     </PortalLayout>
   );
 }

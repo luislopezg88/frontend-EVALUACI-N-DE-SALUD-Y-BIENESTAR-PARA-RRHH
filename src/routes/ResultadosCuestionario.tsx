@@ -6,7 +6,7 @@ import Card from "react-bootstrap/Card";
 import { Accordion } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGlasses } from "@fortawesome/free-solid-svg-icons";
+import { faVrCardboard } from "@fortawesome/free-solid-svg-icons";
 
 interface Cuestionario {
   _id: string;
@@ -32,6 +32,7 @@ export default function ListaCuestionarios() {
   const [resultados, setResultados] = useState<Resultado[]>([]);
   const [preguntasMap, setPreguntasMap] = useState<any>({});
   let ultimaSeccionImpresa = "";
+  const [ejecutoefecto, setEjecutoEfecto] = useState<boolean>(false);
 
   async function fetchResultados(cuestionarioId: string | undefined) {
     try {
@@ -39,15 +40,13 @@ export default function ListaCuestionarios() {
       if (response.ok) {
         const data = await response.json();
         const empleadosData = data.body.empleados;
-
         const mutate = data.body.data.map((item: Resultado) => {
           const empleadoData = empleadosData.find(
-            (empleado: any) => empleado._id === item.empleado_id
+            (empleado: any) => empleado.user_id === item.empleado_id
           );
           const empleadoNombre = `${empleadoData?.name ?? ""} ${
             empleadoData?.lastname ?? ""
           }`;
-
           return {
             ...item,
             empleado: empleadoNombre,
@@ -81,7 +80,6 @@ export default function ListaCuestionarios() {
             };
           });
         });
-
         setPreguntasMap(newPreguntasMap);
       } else {
         setError("Error al cargar la lista de cuestionarios");
@@ -97,7 +95,15 @@ export default function ListaCuestionarios() {
   }
 
   useEffect(() => {
-    fetchCuestionario(cuestionarioId);
+    if(cuestionarioId){
+      if(!ejecutoefecto) {
+        fetchCuestionario(cuestionarioId)
+        setEjecutoEfecto(true)
+      } else {
+        return
+      }
+    }
+    
   }, [cuestionarioId]);
 
   return (
@@ -130,18 +136,9 @@ export default function ListaCuestionarios() {
                               {item.respuestas.map(
                                 (respuestasGrupo: any, respIndex: number) => (
                                   <div key={respIndex}>
-                                    {respuestasGrupo.map(
-                                      (
-                                        respuesta: any,
-                                        respuestaIndex: number
-                                      ) => {
-                                        if (
-                                          preguntasMap[respuesta.pregunta_id]
-                                            .seccion !== ultimaSeccionImpresa
-                                        ) {
-                                          ultimaSeccionImpresa =
-                                            preguntasMap[respuesta.pregunta_id]
-                                              .seccion;
+                                    {respuestasGrupo.map((respuesta: any,respuestaIndex: number) => {
+                                        if (preguntasMap[respuesta.pregunta_id] && preguntasMap[respuesta.pregunta_id].seccion !== ultimaSeccionImpresa) {
+                                          ultimaSeccionImpresa = preguntasMap[respuesta.pregunta_id].seccion;
                                           return (
                                             <div key={respuestaIndex}>
                                               <p>
@@ -178,10 +175,8 @@ export default function ListaCuestionarios() {
                                             <div key={respuestaIndex}>
                                               <p className="mb-0">
                                                 &bull;{" "}
-                                                {
-                                                  preguntasMap[
-                                                    respuesta.pregunta_id
-                                                  ].pregunta
+                                                {                                                
+                                                  preguntasMap[respuesta.pregunta_id] ? preguntasMap[respuesta.pregunta_id].pregunta : '#'
                                                 }
                                               </p>
                                               <p className="mx-2">
@@ -209,7 +204,7 @@ export default function ListaCuestionarios() {
                             ))*/}
                             <Link to={getUrlImagen(item.imagenes)} title="result">
                               <button>
-                                ver con <FontAwesomeIcon icon={faGlasses} />
+                                ver con <FontAwesomeIcon icon={faVrCardboard} />
                               </button>
                             </Link>
                             
